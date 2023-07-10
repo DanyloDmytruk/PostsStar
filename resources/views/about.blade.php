@@ -39,5 +39,5 @@
     </ul>
     </p>
 
-    <h4 class="text-primary">PostsStar was developed by Danylo Dmytruk and Viacheslav Zhulchynskyy</h4>
+    <h4 class="text-primary">PostsStar was developed by Danylo Dmytruk and Viacheslav Zhulchynskyi</h4>
 @endsection
