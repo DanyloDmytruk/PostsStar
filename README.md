@@ -1,4 +1,4 @@
-⭐ PostsStar: An Open-Source Blog for Free Expression
+⭐ PostsStar: An Open-Source Blog for Free Expression ⭐
 
 ☀️ PostsStar is an open-source blog platform that provides a space for individuals to freely share their thoughts, ideas, and texts with the world. It is designed to empower users and promote open dialogue and free expression.
 
