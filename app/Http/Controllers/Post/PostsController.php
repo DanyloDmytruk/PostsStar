@@ -20,8 +20,7 @@ class PostsController extends BaseController
         $pageTitle = 'List of all posts - PostsStar';
         $activeLink = 'posts';
         $mainTitle = 'List of all posts';
-
-        //dd(Posts::find(1)->category->title);
+        
         return view('post.posts', compact('pageTitle', 'activeLink', 'mainTitle', 'allPosts'));
     }
 }

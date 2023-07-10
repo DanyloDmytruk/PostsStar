@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', "HomeController@index");
+
 Route::group(['namespace'=>'Post'], function(){
     Route::get('/posts', 'PostsController')->name('posts');
 
@@ -25,3 +27,7 @@ Route::group(['namespace'=>'Post'], function(){
 Route::get('/about', 'AboutController')->name('about');
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
