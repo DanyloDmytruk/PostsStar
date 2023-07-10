@@ -15,7 +15,7 @@ class PostsController extends BaseController
 {
     public function __invoke()
     {
-        $allPosts = Posts::all();
+        $allPosts = Posts::paginate(10);
 
         $pageTitle = 'List of all posts - PostsStar';
         $activeLink = 'posts';
