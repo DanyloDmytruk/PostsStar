@@ -8,6 +8,9 @@
     <title>{{ $pageTitle }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -15,6 +18,7 @@
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><i class="fa-solid fa-star"></i> PostsStar</a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,7 +26,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link {{ $activeLink == 'home' ? "active" : "" }}" href="#"> <i class="fa-solid fa-house"></i> Home</a>
+                            <a class="nav-link {{ $activeLink == 'home' ? "active" : "" }}" href="{{ route('home') }}"> <i class="fa-solid fa-house"></i> Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $activeLink == 'posts' ? "active" : "" }}" href="{{ route('posts') }}"><i class="fa-solid fa-comments"></i> Posts</a>
