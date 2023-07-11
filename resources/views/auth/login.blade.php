@@ -14,15 +14,15 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <!-- Email input -->
+                    <!-- Email or username input -->
                     <div class="form-outline mb-4">
-                        <input id="email" type="email"
-                            class="form-control form-control-lg @error('email') is-invalid @enderror" name="email"
-                            value="{{ old('email') }}" required autocomplete="email" autofocus
+                        <input id="login" type="text"
+                            class="form-control form-control-lg {{ $errors->has('name') || $errors->has('email') ? ' is-invalid' : '' }}"
+                            name="login" value="{{ old('name') ?: old('email') }}" required autofocus
                             placeholder="Email or username" />
-                        @error('email')
+                        @if ($errors->has('name') || $errors->has('email'))
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                <strong>{{ $errors->first('name') ?: $errors->first('email') }}</strong>
                             </span>
                         @enderror
                     </div>
