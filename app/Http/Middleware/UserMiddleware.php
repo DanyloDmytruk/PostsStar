@@ -16,6 +16,16 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if(auth()->check() === false)
+        {
+            return redirect()->route('login');
+        }
+        
+        if(auth()->user()->is_banned == true)
+        {
+            return redirect()->route('banned');
+        }
+
         return $next($request);
     }
 }

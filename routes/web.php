@@ -13,17 +13,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', "HomeController@index");
-Route::get('/home', "HomeController@index")->name('home');
-
-Route::group(['namespace'=>'Post'], function(){
-    Route::get('/posts', 'PostsController')->name('posts');
-
-    Route::group(['prefix'=>'post'], function(){
-        //Route::get('/edit/{id}', 'PostsController')->name('posts.edit');
-        Route::get('/read/{id}', 'ReadController')->name('posts.read');
+Route::group(['middleware'=>'user'], function(){
+    Route::get('/', "HomeController@index");
+    Route::get('/home', "HomeController@index")->name('home');
+    
+    Route::group(['namespace'=>'Post'], function(){
+        Route::get('/posts', 'PostsController')->name('posts');
+    
+        Route::group(['prefix'=>'post'], function(){
+            //Route::get('/edit/{id}', 'PostsController')->name('posts.edit');
+            Route::get('/read/{id}', 'ReadController')->name('posts.read');
+        });
     });
+
+    Route::get('/logout', function(){
+        Auth::logout();
+        return redirect()->route('login');
+    });
+    
 });
+
+Route::get('/banned', "BannedController")->name('banned');
+
 
 Route::get('/about', 'AboutController')->name('about');
 

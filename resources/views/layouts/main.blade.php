@@ -41,7 +41,7 @@
                         <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                     
-                    <form class="d-flex" style="margin-left: 1em">
+                    <form method="get" action="{{ route('logout') }}" class="d-flex" style="margin-left: 1em">
                         <button class="btn btn-outline-info" type="submit">Log out <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     </form>
                 </div>
