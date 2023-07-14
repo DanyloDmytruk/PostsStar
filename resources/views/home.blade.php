@@ -1,23 +1,32 @@
-@extends('layouts.app')
+{{-- 
+Left bar: edit photo and bio, create post form, user's posts
+Right bar: Check posts, Top blogs, last posts 
+--}}
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+@extends('layouts.main')
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+@section('main_content')
+    <div class="d-flex mt-5">
+        <div class="flex-fill">content item, will fill remaining</div>
 
-                    {{ __('You are logged in!') }}
-                </div>
+        <div>
+            <div class="flex-shrink-0 p-3" style="width: 280px;">
+                <span class="fs-6 border-bottom">ARCHIVE POSTS</span>
+                <a href="{{ route('posts') }}" class="d-flex align-items-center pb-3 mt-2 mb-3 link-dark text-decoration-none">
+                    <span class="fs-6 fw-semibold"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Read Lastest Posts</span>
+                </a>
+
+                <span class="fs-6 border-bottom">TOP BLOGS</span>
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 mt-2 link-dark text-decoration-none ">
+                    <span class="fs-6 fw-semibold"></span>
+                </a>
+
+                <span class="fs-6 border-bottom">LAST POSTS</span>
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 mt-2 link-dark text-decoration-none">
+                    <span class="fs-6 fw-semibold"></span>
+                </a>
+                
             </div>
         </div>
     </div>
-</div>
 @endsection
