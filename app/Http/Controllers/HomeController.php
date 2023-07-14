@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,7 @@ class HomeController extends Controller
     {
         $pageTitle = 'Home - PostsStar';
         $activeLink = 'home';
-        
+
         return view('home', compact('pageTitle', 'activeLink'));
     }
 }
