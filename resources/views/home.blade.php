@@ -112,7 +112,15 @@ Right bar: Check posts, Top blogs, last posts
                     <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
                         <div class="d-flex w-100 align-items-center justify-content-between">
                             <strong class="mb-1">Title</strong>
-                            <small class="text-muted">11</small>
+                            <div class="d-flex justify-content-end">
+                                <div class="p-1">
+                                    <small class="text-muted">del up</small>
+                                </div>
+                                <div class="p-1">
+                                    <small class="text-muted">02/12/2023</small>
+                                </div>
+                                
+                            </div>
                         </div>
                         <div class="col-10 mb-0 small">1499</div>
                         <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
