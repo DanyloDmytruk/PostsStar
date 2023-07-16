@@ -30,6 +30,8 @@ Route::group(['middleware'=>'user'], function(){
         Auth::logout();
         return redirect()->route('login');
     });
+
+    Route::post('/ajax', 'AjaxController');
     
 });
 

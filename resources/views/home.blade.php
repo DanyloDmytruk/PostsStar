@@ -1,11 +1,20 @@
-{{-- 
-Left bar: edit photo and bio, create post form, user's posts
-Right bar: Check posts, Top blogs, last posts 
---}}
-
 @extends('layouts.main')
 
 @section('main_content')
+    <script>
+        $(document).ready(function() {
+            $("#bio").change(function() {
+                var value = $(this).val();
+
+                $.post("ajax", {
+                        "_token": "{{ csrf_token() }}",
+                        method: 'changebio',
+                        bio: value,
+                    });
+            });
+        });
+    </script>
+
     <div class="d-flex mt-5">
         <div class="flex-fill">
             <div class="container border-bottom" style="padding-bottom: 1em; margin-bottom: 1em">
@@ -22,7 +31,7 @@ Right bar: Check posts, Top blogs, last posts
                                 <i style="font-size: 21px" class="fa-solid fa-circle-info"> </i>
                             </div>
                             <div class="col-11">
-                                <input maxlength="70" style="width: 50em; margin-right: 0; padding-right: 0"
+                                <input id="bio" maxlength="70" style="width: 50em; margin-right: 0; padding-right: 0"
                                     placeholder="Enter your bio" class="border-0 mt-0 mb-0"
                                     value="{{ auth()->user()->bio }}">
                             </div>
@@ -119,7 +128,7 @@ Right bar: Check posts, Top blogs, last posts
                                 <div class="p-1">
                                     <small class="text-muted">02/12/2023</small>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="col-10 mb-0 small">1499</div>
@@ -134,7 +143,8 @@ Right bar: Check posts, Top blogs, last posts
                 <div class="container">
                     <div class="row justify-content-md-center mb-1 mt-2">
                         <div class="col-md-auto">
-                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-spinner"></i> Load Other </button>
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-spinner"></i> Load
+                                Other </button>
                         </div>
                     </div>
                 </div>
