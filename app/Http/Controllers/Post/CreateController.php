@@ -15,12 +15,13 @@ class CreateController extends BaseController
 {
     public function __invoke()
     {
+        $categories = Categories::all();
 
         $pageTitle = 'Create post - PostsStar';
         $activeLink = 'null';
         $mainTitle = 'Create Post';
         
-        return view('post.create', compact('pageTitle', 'activeLink', 'mainTitle'));
+        return view('post.create', compact('pageTitle', 'activeLink', 'mainTitle', 'categories'));
     }
 
     

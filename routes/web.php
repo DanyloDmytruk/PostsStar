@@ -41,6 +41,7 @@ Route::group(['middleware'=>'user'], function(){
     Route::group(['prefix'=>'ajax'], function(){
         Route::post('/changebio', 'AjaxController@changebio')->name('ajax.changebio');
         Route::post('/changeavatar', 'AjaxController@changeavatar')->name('ajax.changeavatar');
+        Route::post('/createpost', 'AjaxController@createpost')->name('ajax.createpost');
     });
     
 

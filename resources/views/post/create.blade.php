@@ -3,7 +3,7 @@
 @section('main_content')
     <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white mt-2" style="width: 89em;">
 
-        
+
 
         <form id="createPostForm" method="POST">
             @csrf
@@ -19,9 +19,25 @@
                     required>
             </div>
 
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
                 <label for="description">Content</label>
-                <textarea rows="17" class="form-control" name="description"></textarea>
+                <textarea rows="17" class="form-control" name="content"></textarea>
+            </div>
+
+
+            <div class="form-group mb-2">
+                <label for="title">Category </label>
+                <select name="category" class="form-select mb-2" aria-label="category">
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="title">Tags </label>
+                <small> (separated with commas)</small>
+                <input type="text" class="form-control" id="tags" name="tags">
             </div>
 
 
@@ -54,15 +70,12 @@
                     contentType: false,
                     success: function(response) {
                         console.log(response.message);
-                        location.reload();
+                        location.href = "{{ route('home') }}";
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr.responseText);
                     }
                 });
             });
-
         </script>
-
-
     @endsection
