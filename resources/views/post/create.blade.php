@@ -4,6 +4,9 @@
     <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white mt-2" style="width: 89em;">
 
 
+        <div class="alert alert-danger" role="alert" id="errorData">
+            Error has occured. Check input data again.
+        </div>
 
         <form id="createPostForm" method="POST">
             @csrf
@@ -15,8 +18,8 @@
 
             <div class="form-group mb-2">
                 <label for="image">Post Image</label>
-                <input id="image" type="file" class="form-control" name="image" value="{{ old('image') }}"
-                    required>
+                <input id="image" type="file" class="form-control"
+                    name="image" value="{{ old('image') }}" required>
             </div>
 
             <div class="form-group mb-2">
@@ -54,6 +57,9 @@
         </form>
 
         <script>
+            $('#errorData').hide();
+
+
             $('#createPostForm').submit(function(e) {
                 e.preventDefault();
 
@@ -69,11 +75,17 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        console.log(response.message);
-                        location.href = "{{ route('home') }}";
+                        if (response == 'FAIL') {
+                            $('#errorData').show();
+                        } else {
+
+                            console.log(response.message);
+                            location.href = "{{ route('home') }}";
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr.responseText);
+                        $('#errorData').show();
                     }
                 });
             });

@@ -5,6 +5,7 @@ namespace App\Services\Ajax;
 use App\Models\User;
 use App\Models\Posts;
 use App\Models\PostTag;
+use App\Models\Tags;
 
 class Service
 {
@@ -43,16 +44,21 @@ class Service
         return true;
     }
 
-    public function create_post($userId, $image, $title, $content, $category, $tags)
+    public function create_post($userId, $image, $title, $content, $category, $tags) : bool
     {
         $user = User::find($userId);
 
+        //Check post with author same title exists, then return false
+        if (Posts::where('title', $title)->where('author_id', $userId)->first()) {
+            return false;
+        }
+
         //Move post image
         $postImageName = time() . $user->name[0] . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('posts').'/img/', $postImageName);
+        $image->move(public_path('img') . '/posts/', $postImageName);
 
         //Create post
-        Posts::create([
+        $Post = Posts::create([
             'title' => $title,
             'image' => $postImageName,
             'content' => $content,
@@ -63,5 +69,23 @@ class Service
         ]);
 
         //Add tags to post
+        foreach (explode(',', trim($tags)) as $tag) {
+            $tag_id = Tags::where('title', $tag)->first()->id;
+
+            if (!$tag_id) //If tag does not exists, create it
+            {
+                $tag_id = Tags::create([
+                    'title' => $tag
+                ])->id;
+            }
+
+            //Link tags to post
+            PostTag::create([
+                'tag_id' => $tag_id,
+                'post_id' => $Post->id,
+            ]);
+        }
+
+        return true;
     }
 }
