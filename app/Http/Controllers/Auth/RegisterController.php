@@ -65,9 +65,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if(request()->hasfile('avatar'))
-        {
-            $avatarName = time().$data['name'][0].'.'.request()->avatar->getClientOriginalExtension();
+        if (request()->hasfile('avatar')) {
+            $avatarName = time() . $data['name'][0] . '.' . request()->avatar->getClientOriginalExtension();
             request()->avatar->move(public_path('avatars'), $avatarName);
         }
 
@@ -76,6 +75,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'avatar' => $avatarName ?? NULL,
+            'bio' => '',
             'role' => 'user',
         ]);
     }
