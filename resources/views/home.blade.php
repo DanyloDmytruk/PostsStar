@@ -41,7 +41,8 @@
 
             <div class="container border-bottom" style="padding-bottom: 1em">
                 <div class="row justify-content-md-left mb-1">
-                    <button type="button" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> Create New
+                    <button onclick="location.href='{{ route('posts.create') }}'" type="button" class="btn btn-primary"><i
+                            class="fa-solid fa-circle-plus"></i> Create New
                         Post</button>
                 </div>
 
@@ -184,6 +185,10 @@
                         <input id="changeAvatar" type="file" class="form-control" name="changeAvatar"
                             value="{{ old('avatar') }}" required>
 
+                        <span id="errUploadAvatar" class="invalid-feedback" role="alert">
+                            <strong>Error uploading Photo</strong>
+                        </span>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -195,6 +200,8 @@
     </div>
 
     <script>
+        $('#errUploadAvatar').hide();
+
         $(document).ready(function() {
             $("#bio").change(function() {
                 var value = $(this).val();
@@ -225,8 +232,11 @@
                         location.reload();
                     },
                     error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
+                        console.log("Error: " + xhr.responseText);
+                        $('#errUploadAvatar').show();
                         
+                       
+                        $('#changeAvatar').addClass('is-invalid');
                     }
                 });
             });
