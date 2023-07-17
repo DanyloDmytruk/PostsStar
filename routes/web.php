@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware'=>'user'], function(){
+    //Home
     Route::get('/', "HomeController@index");
     Route::get('/home', "HomeController@index")->name('home');
     
+    //Post(s)
     Route::group(['namespace'=>'Post'], function(){
         Route::get('/posts', 'PostsController')->name('posts');
     
@@ -26,18 +28,27 @@ Route::group(['middleware'=>'user'], function(){
         });
     });
 
+
+    //Logout
     Route::get('/logout', function(){
         Auth::logout();
         return redirect()->route('login');
     });
 
-    Route::post('/ajax', 'AjaxController');
+    //Ajax
+    Route::post('/ajax', 'AjaxController')->name('ajax');
+    Route::group(['prefix'=>'ajax'], function(){
+        Route::post('/changebio', 'AjaxController@changebio')->name('ajax.changebio');
+        Route::post('/changeavatar', 'AjaxController@changeavatar')->name('ajax.changeavatar');
+    });
     
+
 });
 
+//Banned
 Route::get('/banned', "BannedController")->name('banned');
 
-
+//About
 Route::get('/about', 'AboutController')->name('about');
 
 

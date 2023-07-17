@@ -1,16 +1,15 @@
 @extends('layouts.main')
 
 @section('main_content')
-   
-
     <div class="d-flex mt-5">
         <div class="flex-fill">
             <div class="container border-bottom" style="padding-bottom: 1em; margin-bottom: 1em">
                 <div class="row justify-content-md-left">
                     <div class="col-md-1">
                         <img src="avatars/{{ auth()->user()->avatar }}" title="{{ auth()->user()->name }}"
-                            style="border-radius: 5%; height: 5em">
-                        <a data-toggle="modal" data-target="#myModal" href="#" id="photoLink"><small class="fs-8"><i class="fa-solid fa-pen-to-square"></i>
+                            style="border-radius: 5%; height: 5em; width: 5em">
+                        <a data-toggle="modal" data-target="#myModal" href="#" id="photoLink"><small class="fs-8"><i
+                                    class="fa-solid fa-pen-to-square"></i>
                                 Photo</small></button></a>
                     </div>
 
@@ -165,7 +164,7 @@
         </div>
     </div>
 
-   
+
 
 
     <!-- Bootstrap Modal -->
@@ -174,17 +173,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal content goes here -->
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i class="fa-solid fa-image"></i> Change Profile Photo</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <input id="changeAvatar" type="file" class="form-control" name="changeAvatar" value="{{ old('avatar') }}" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <form id="photoForm" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel"><i class="fa-solid fa-image"></i> Change Profile Photo
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <input id="changeAvatar" type="file" class="form-control" name="changeAvatar"
+                            value="{{ old('avatar') }}" required>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload Photo</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -194,14 +199,38 @@
             $("#bio").change(function() {
                 var value = $(this).val();
 
-                $.post("ajax", {
+                $.post("{{ route('ajax.changebio') }}", {
                     "_token": "{{ csrf_token() }}",
                     method: 'changebio',
                     bio: value,
                 });
             });
 
+            $('#photoForm').submit(function(e) {
+                e.preventDefault();
+
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                var formData = new FormData(this);
+                formData.append('_token', csrfToken);
+
+                $.ajax({
+                    url: "{{ route('ajax.changeavatar') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response.message);
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        
+                    }
+                });
+            });
+
         });
     </script>
-
 @endsection

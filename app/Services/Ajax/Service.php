@@ -20,4 +20,24 @@ class Service
             return false;
         }
     }
+
+    public function change_user_avatar($userId, $avatar)
+    {
+        $user = User::find($userId);
+
+        //delete old photo
+        if (file_exists(public_path('avatars') . '/' . $user->avatar)) {
+            unlink(public_path('avatars') . '/' . $user->avatar);
+        }
+
+        //set new photo
+        $avatarName = time() . $user->name[0] . '.' . $avatar->getClientOriginalExtension();
+        $avatar->move(public_path('avatars'), $avatarName);
+
+        //add to db
+        $user->avatar = $avatarName;
+        $user->save();
+
+        return true;
+    }
 }
