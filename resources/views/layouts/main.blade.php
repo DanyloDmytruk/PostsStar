@@ -5,12 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <title>{{ $pageTitle }}</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <script src="{{ mix('js/app.js') }}"></script>
 
+    <title>{{ $pageTitle }}</title>
+    
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    
 </head>
 
 <body>
@@ -61,6 +66,8 @@
                 <h1 class="mt-5">{{ $mainTitle }}</h1>
             @endif
 
+            
+            
             @yield('main_content')
 
         </div>
@@ -68,6 +75,7 @@
 
     </main>
 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 

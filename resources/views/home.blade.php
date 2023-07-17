@@ -1,19 +1,7 @@
 @extends('layouts.main')
 
 @section('main_content')
-    <script>
-        $(document).ready(function() {
-            $("#bio").change(function() {
-                var value = $(this).val();
-
-                $.post("ajax", {
-                        "_token": "{{ csrf_token() }}",
-                        method: 'changebio',
-                        bio: value,
-                    });
-            });
-        });
-    </script>
+   
 
     <div class="d-flex mt-5">
         <div class="flex-fill">
@@ -22,7 +10,8 @@
                     <div class="col-md-1">
                         <img src="avatars/{{ auth()->user()->avatar }}" title="{{ auth()->user()->name }}"
                             style="border-radius: 5%; height: 5em">
-                        <small class="fs-8"><i class="fa-solid fa-pen-to-square"></i> Photo</small>
+                        <a data-toggle="modal" data-target="#myModal" href="#" id="photoLink"><small class="fs-8"><i class="fa-solid fa-pen-to-square"></i>
+                                Photo</small></button></a>
                     </div>
 
                     <div class="col-md-auto">
@@ -175,4 +164,44 @@
             </div>
         </div>
     </div>
+
+   
+
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal content goes here -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel"><i class="fa-solid fa-image"></i> Change Profile Photo</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input id="changeAvatar" type="file" class="form-control" name="changeAvatar" value="{{ old('avatar') }}" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#bio").change(function() {
+                var value = $(this).val();
+
+                $.post("ajax", {
+                    "_token": "{{ csrf_token() }}",
+                    method: 'changebio',
+                    bio: value,
+                });
+            });
+
+        });
+    </script>
+
 @endsection
