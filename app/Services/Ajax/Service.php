@@ -70,13 +70,18 @@ class Service
 
         //Add tags to post
         foreach (explode(',', trim($tags)) as $tag) {
-            $tag_id = Tags::where('title', $tag)->first()->id;
+            $tag_id = -1;
+            $tagRow = Tags::where('title', $tag)->first();
 
-            if (!$tag_id) //If tag does not exists, create it
+            if (!$tagRow) //If tag does not exists, create it
             {
                 $tag_id = Tags::create([
                     'title' => $tag
                 ])->id;
+            }
+            else
+            {
+                $tag_id = $tagRow->id;
             }
 
             //Link tags to post
