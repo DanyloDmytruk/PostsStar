@@ -1,5 +1,6 @@
 @extends('layouts.main')
 
+@inject('service', 'App\Services\Posts\Service')
 @section('main_content')
     <div class="d-flex mt-5">
         <div class="flex-fill">
@@ -46,95 +47,50 @@
                         Post</button>
                 </div>
 
-                <div class="list-group list-group-flush border-bottom border-primary scrollarea">
-                    <a href="#" class="list-group-item list-group-item-action py-2 lh-sm ">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">Title</strong>
-                            <small class="text-muted">11</small>
-                        </div>
-                        <div class="col-10 mb-0 small">1499</div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
+                <div id="postContainer">
+                    @foreach ($userPosts as $userPost)
+                        <div class="list-group list-group-flush border-bottom scrollarea border-primary">
+                            <a href="{{ route('posts.read', ['id' => $userPost->id]) }}"
+                                class="list-group-item list-group-item-action py-2 lh-sm">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <strong class="mb-1">{{ $userPost->title }}</strong>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="p-1">
+                                            <small class="text-muted"><i style="color: #d59319"
+                                                    class="fa-solid fa-pencil"></i>
+                                                <i style="color: #ee1515" class="fa-solid fa-trash"></i></small>
+                                        </div>
+                                        <div class="p-1">
+                                            <small
+                                                class="text-muted">{{ $service->get_post_date(strtotime($userPost->created_at)) }}</small>
+                                        </div>
 
-                            <i class="fa-solid fa-tag"></i> 111
-                        </div>
-                    </a>
-                </div>
-
-                <div class="list-group list-group-flush border-bottom border-primary scrollarea">
-                    <a href="#" class="list-group-item list-group-item-action py-2 lh-sm ">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">Title</strong>
-                            <small class="text-muted">11</small>
-                        </div>
-                        <div class="col-10 mb-0 small">1499</div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
-
-                            <i class="fa-solid fa-tag"></i> 111
-                        </div>
-                    </a>
-                </div>
-
-                <div class="list-group list-group-flush border-bottom scrollarea border-primary">
-                    <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">Title</strong>
-                            <small class="text-muted">11</small>
-                        </div>
-                        <div class="col-10 mb-0 small">1499</div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
-
-                            <i class="fa-solid fa-tag"></i> 111
-                        </div>
-                    </a>
-                </div>
-
-                <div class="list-group list-group-flush border-bottom scrollarea border-primary">
-                    <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">Title</strong>
-                            <small class="text-muted">11</small>
-                        </div>
-                        <div class="col-10 mb-0 small">1499</div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
-
-                            <i class="fa-solid fa-tag"></i> 111
-                        </div>
-                    </a>
-                </div>
-
-                <div class="list-group list-group-flush border-bottom scrollarea border-primary">
-                    <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">Title</strong>
-                            <div class="d-flex justify-content-end">
-                                <div class="p-1">
-                                    <small class="text-muted">del up</small>
+                                    </div>
                                 </div>
-                                <div class="p-1">
-                                    <small class="text-muted">02/12/2023</small>
+                                <div class="col-10 mb-0 small">
+                                    {{ Str::length($userPost->content) > 60 ? $service->trim_post_content_for_list(80, $userPost->content) . '...' : $userPost->content }}
                                 </div>
-
-                            </div>
+                                <div class="col-10 mb-0 small"><span
+                                        class="text-primary">Category:</span>{{ $userPost->category->title }}</div>
+                                <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
+                                    @foreach ($userPost->tags as $tag)
+                                        <i class="fa-solid fa-tag"></i> {{ $tag->title }}
+                                    @endforeach
+                                </div>
+                            </a>
                         </div>
-                        <div class="col-10 mb-0 small">1499</div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>111</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
-
-                            <i class="fa-solid fa-tag"></i> 111
-                        </div>
-                    </a>
+                    @endforeach
                 </div>
+
 
                 <div class="container">
                     <div class="row justify-content-md-center mb-1 mt-2">
                         <div class="col-md-auto">
-                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-spinner"></i> Load
-                                Other </button>
+                            <button type="button" id="loadMoreBtn" class="btn btn-secondary"><i
+                                    class="fa-solid fa-spinner"></i> Load
+                                More </button>
                         </div>
+                        <input type="hidden" id="currentPage" value="1">
                     </div>
                 </div>
 
@@ -169,8 +125,7 @@
 
 
     <!-- Bootstrap Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal content goes here -->
@@ -234,13 +189,81 @@
                     error: function(xhr, status, error) {
                         console.log("Error: " + xhr.responseText);
                         $('#errUploadAvatar').show();
-                        
-                       
+
+
                         $('#changeAvatar').addClass('is-invalid');
                     }
                 });
             });
 
+
         });
+
+
+        $('#loadMoreBtn').click(function() {
+            loadMorePosts();
+        });
+
+        function loadMorePosts() {
+            var currentPage = parseInt($('#currentPage').val()) + 1;
+
+            $.ajax({
+                url: '{{ route('home') }}',
+                type: 'GET',
+                data: {
+                    page: currentPage
+                },
+                dataType: 'json',
+                success: function(response) {
+
+                    var posts = response;
+                    var postContainer = $('#postContainer');
+
+                    $.each(posts, function(index, post) {
+                        var postElement = $('<div>')
+                            .addClass(
+                                'list-group list-group-flush border-bottom scrollarea border-primary')
+                            .html(
+                                '<a href="/posts/read/' + post.id +
+                                '" class="list-group-item list-group-item-action py-2 lh-sm">' +
+                                '<div class="d-flex w-100 align-items-center justify-content-between">' +
+                                '<strong class="mb-1">' + post.title + '</strong>' +
+                                '<div class="d-flex justify-content-end">' +
+                                '<div class="p-1">' +
+                                '<small class="text-muted"><i style="color: #d59319" class="fa-solid fa-pencil"></i> <i style="color: #ee1515" class="fa-solid fa-trash"></i></small>' +
+                                '</div>' +
+                                '<div class="p-1">' +
+                                '<small class="text-muted">' + post.date + '</small>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-10 mb-0 small">' + post.content +
+                                '</div>' +
+                                '<div class="col-10 mb-0 small"><span class="text-primary">Category:</span> ' +
+                                post.category + '</div>' +
+                                '<div class="col-10 mb-0 small"><span class="text-success">Tags:</span> ' +
+                                post.tags.map(function(tag) {
+                                    return '<i class="fa-solid fa-tag"></i> ' + tag.title;
+                                }).join('') +
+                                '</div>' +
+                                '</a>'
+                            );
+
+                        postContainer.append(postElement);
+
+                        postContainer.append(postElement);
+                    });
+
+                    $('#currentPage').val(currentPage);
+
+                    if (!response.next_page_url) {
+                        $('#loadMoreBtn').hide();
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
     </script>
 @endsection
