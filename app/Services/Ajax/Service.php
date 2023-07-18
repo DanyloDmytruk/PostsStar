@@ -93,4 +93,8 @@ class Service
 
         return true;
     }
+
+    public function delete_post($id, $authorId){
+        Posts::where('id', $id)->where('author_id', $authorId)->delete();
+    }
 }

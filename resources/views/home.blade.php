@@ -56,15 +56,17 @@
                                     <strong class="mb-1">{{ $userPost->title }}</strong>
                                     <div class="d-flex justify-content-end">
                                         <div class="p-1">
-                                            <small class="text-muted"><i style="color: #d59319"
-                                                    class="fa-solid fa-pencil"></i>
-                                                <i style="color: #ee1515" class="fa-solid fa-trash"></i></small>
+                                            <small class="text-muted">
+                                                <i style="color: #d59319" class="fa-solid fa-pencil"></i>
+                                                <i onclick="DeletePostModalForm('{{ $userPost->id }}')"
+                                                    class="fa-solid fa-trash delete-post" data-toggle="modal"
+                                                    data-target="#deletePostModal" style="color: #ee1515"></i>
+                                            </small>
                                         </div>
                                         <div class="p-1">
                                             <small
                                                 class="text-muted">{{ $service->get_post_date(strtotime($userPost->created_at)) }}</small>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="col-10 mb-0 small">
@@ -86,8 +88,8 @@
                 <div class="container">
                     <div class="row justify-content-md-center mb-1 mt-2">
                         <div class="col-md-auto">
-                            <button type="button" id="loadMoreBtn" class="btn btn-secondary"><i
-                                    class="fa-solid fa-spinner"></i> Load
+                            <button type="button" id="loadMoreBtn" class="btn btn-secondary"><i class="fa-solid fa-spinner"
+                                    id="loadmoreIcon"></i> Load
                                 More </button>
                         </div>
                         <input type="hidden" id="currentPage" value="1">
@@ -124,7 +126,7 @@
 
 
 
-    <!-- Bootstrap Modal -->
+    <!-- Change Profile Photo Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -154,10 +156,50 @@
         </div>
     </div>
 
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal content goes here -->
+                <form id="deleteForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deletePostLabel"><i class="fa-solid fa-trash delete-post"></i> Are
+                            you sure want
+                            to delete this post?
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" id="yesDelete" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         $('#errUploadAvatar').hide();
+        $('#loadmoreIcon').hide();
 
         $(document).ready(function() {
+
+            $('.list-group-item').on('click', function(e) {
+                if ($(e.target).hasClass('delete-post')) {
+                    e.preventDefault();
+                    // Open deletePostModal
+                    $('#deletePostModal').modal('show');
+                }
+            });
+
+            $('#deletePostModal').on('hidden.bs.modal', function() {
+                $('.modal-backdrop').remove(); // Remove the modal overlay
+                location.reload();
+            });
+
+
             $("#bio").change(function() {
                 var value = $(this).val();
 
@@ -206,6 +248,7 @@
 
         function loadMorePosts() {
             var currentPage = parseInt($('#currentPage').val()) + 1;
+            $('#loadmoreIcon').show();
 
             $.ajax({
                 url: '{{ route('home') }}',
@@ -230,7 +273,7 @@
                                 '<strong class="mb-1">' + post.title + '</strong>' +
                                 '<div class="d-flex justify-content-end">' +
                                 '<div class="p-1">' +
-                                '<small class="text-muted"><i style="color: #d59319" class="fa-solid fa-pencil"></i> <i style="color: #ee1515" class="fa-solid fa-trash"></i></small>' +
+                                '<small class="text-muted"><i style="color: #d59319" class="fa-solid fa-pencil"></i> <i class="fa-solid fa-trash delete-post" data-toggle="modal" data-target="#deletePostModal" style="color: #ee1515"></i></small>' +
                                 '</div>' +
                                 '<div class="p-1">' +
                                 '<small class="text-muted">' + post.date + '</small>' +
@@ -251,14 +294,38 @@
 
                         postContainer.append(postElement);
 
-                        postContainer.append(postElement);
                     });
 
                     $('#currentPage').val(currentPage);
+                    $('#loadmoreIcon').hide();
 
                     if (!response.next_page_url) {
                         $('#loadMoreBtn').hide();
                     }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        
+        function DeletePostModalForm(id) {
+            $('#yesDelete').attr('onclick', 'DeletePost('+id+')');
+        }
+
+        
+        function DeletePost(id) {
+            $.ajax({
+                url: '{{ route('ajax.deletepost') }}',
+                type: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    id: id
+                },
+                success: function(response) {
+                    location.reload();
                 },
                 error: function(error) {
                     console.log(error);

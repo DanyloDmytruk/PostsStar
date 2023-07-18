@@ -32,6 +32,13 @@ class AjaxController extends Controller
         return $this->ajaxService->change_user_avatar(auth()->user()->id, $request->file('changeAvatar')) ? 'SUCCESS' : 'FAIL';
     }
 
+    public function deletepost(Request $request)
+    {
+        $request->validate(['id' => 'required|integer|min:1',]);
+
+        return $this->ajaxService->delete_post($request->id, auth()->user()->id) ? 'SUCCESS' : 'FAIL';
+    }
+
     public function createpost(Request $request)
     {
         $request->validate([
