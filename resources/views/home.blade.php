@@ -115,9 +115,11 @@
                 </a>
 
                 <span class="fs-6 border-bottom">LAST POSTS</span>
-                <a href="/" class="d-flex align-items-center pb-3 mb-3 mt-2 link-dark text-decoration-none">
-                    <span class="fs-6 fw-semibold"></span>
-                </a>
+                @foreach ($lastestPosts as $latestPost)
+                    <a href="{{ route('posts.read', ['id'=>$latestPost->id]) }}" class="d-flex link-dark text-decoration-none">
+                        <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-comment"></i> {{ $latestPost->title }}</span><br>
+                    </a>
+                @endforeach
 
             </div>
         </div>
@@ -310,16 +312,16 @@
         }
 
 
-        
+
         function DeletePostModalForm(id) {
-            $('#yesDelete').attr('onclick', 'DeletePost('+id+')');
+            $('#yesDelete').attr('onclick', 'DeletePost(' + id + ')');
         }
 
-        
+
         function DeletePost(id) {
             $.ajax({
                 url: '{{ route('ajax.deletepost') }}',
-                type: 'POST',
+                type: 'DELETE',
                 data: {
                     "_token": "{{ csrf_token() }}",
                     id: id

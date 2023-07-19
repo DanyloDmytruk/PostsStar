@@ -42,7 +42,7 @@ Route::group(['middleware'=>'user'], function(){
         Route::post('/changebio', 'AjaxController@changebio')->name('ajax.changebio');
         Route::post('/changeavatar', 'AjaxController@changeavatar')->name('ajax.changeavatar');
         Route::post('/createpost', 'AjaxController@createpost')->name('ajax.createpost');
-        Route::post('/deletepost', 'AjaxController@deletepost')->name('ajax.deletepost');
+        Route::delete('/deletepost', 'AjaxController@deletepost')->name('ajax.deletepost');
     });
     
 
