@@ -57,7 +57,7 @@
                                     <div class="d-flex justify-content-end">
                                         <div class="p-1">
                                             <small class="text-muted">
-                                                <i style="color: #d59319" class="fa-solid fa-pencil"></i>
+                                                <i id="{{ $userPost->id }}" style="color: #d59319" class="fa-solid fa-pencil update-post"></i>
                                                 <i onclick="DeletePostModalForm('{{ $userPost->id }}')"
                                                     class="fa-solid fa-trash delete-post" data-toggle="modal"
                                                     data-target="#deletePostModal" style="color: #ee1515"></i>
@@ -196,6 +196,13 @@
                 }
             });
 
+            $('.list-group-item').on('click', function(e) {
+                if ($(e.target).hasClass('update-post')) {
+                    e.preventDefault();
+                    location.href = "/post/update/"+$(e.target).attr('id');
+                }
+            });
+
             $('#deletePostModal').on('hidden.bs.modal', function() {
                 $('.modal-backdrop').remove(); // Remove the modal overlay
                 location.reload();
@@ -269,7 +276,7 @@
                             .addClass(
                                 'list-group list-group-flush border-bottom scrollarea border-primary')
                             .html(
-                                '<a href="/posts/read/' + post.id +
+                                '<a href="/post/read/' + post.id +
                                 '" class="list-group-item list-group-item-action py-2 lh-sm">' +
                                 '<div class="d-flex w-100 align-items-center justify-content-between">' +
                                 '<strong class="mb-1">' + post.title + '</strong>' +

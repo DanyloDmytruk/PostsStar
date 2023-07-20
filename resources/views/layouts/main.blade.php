@@ -22,7 +22,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><i class="fa-solid fa-star"></i> PostsStar</a>
+                <a class="navbar-brand" href="{{ route('home') }}"><i class="fa-solid fa-star"></i> PostsStar</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
