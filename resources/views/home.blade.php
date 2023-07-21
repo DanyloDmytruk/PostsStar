@@ -84,7 +84,7 @@
                     @endforeach
                 </div>
 
-
+                @if ($userPosts->total() > 5)
                 <div class="container">
                     <div class="row justify-content-md-center mb-1 mt-2">
                         <div class="col-md-auto">
@@ -95,6 +95,7 @@
                         <input type="hidden" id="currentPage" value="1">
                     </div>
                 </div>
+                @endif
 
 
             </div>
