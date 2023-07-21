@@ -13,15 +13,17 @@ use App\Models\Categories;
 
 class UpdateController extends BaseController
 {
-    public function __invoke()
+    public function __invoke($id)
     {
         $categories = Categories::all();
+        $post = Posts::find($id);
+
 
         $pageTitle = 'Update post - PostsStar';
         $activeLink = 'null';
         $mainTitle = 'Update Post';
         
-        return view('post.update', compact('pageTitle', 'activeLink', 'mainTitle', 'categories'));
+        return view('post.update', compact('pageTitle', 'activeLink', 'mainTitle', 'categories', 'post'));
     }
 
     

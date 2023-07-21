@@ -12,8 +12,7 @@
             @csrf
 
             <div class="form-group mb-2">
-                <label for="title">Title </label>
-                <input type="text" class="form-control" name="title">
+                <label for="title"> {{ $post->title }} </label>
             </div>
 
             <div class="form-group mb-2">
