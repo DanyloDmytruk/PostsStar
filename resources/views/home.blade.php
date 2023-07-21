@@ -282,7 +282,7 @@
                                 '<strong class="mb-1">' + post.title + '</strong>' +
                                 '<div class="d-flex justify-content-end">' +
                                 '<div class="p-1">' +
-                                '<small class="text-muted"><i style="color: #d59319" class="fa-solid fa-pencil"></i> <i class="fa-solid fa-trash delete-post" data-toggle="modal" data-target="#deletePostModal" style="color: #ee1515"></i></small>' +
+                                '<small class="text-muted"><i id="'+post.id+'" style="color: #d59319" class="fa-solid fa-pencil update-post"></i> <i class="fa-solid fa-trash delete-post" data-toggle="modal" data-target="#deletePostModal" style="color: #ee1515"></i></small>' +
                                 '</div>' +
                                 '<div class="p-1">' +
                                 '<small class="text-muted">' + post.date + '</small>' +

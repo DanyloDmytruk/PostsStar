@@ -46,10 +46,21 @@ class AjaxController extends Controller
             'title' => 'required|string|max:255|min:2',
             'content' => 'required|string|min:1',
             'category' => 'required|integer|min:1',
-            'tags' => 'required|string|min:1',
+            'tags' => 'required|string|min:2',
         ]);
 
         return $this->ajaxService->create_post(auth()->user()->id, $request->file('image'), $request->title, $request->content, $request->category, $request->tags) ? 'SUCCESS' : 'FAIL';
+    }
+
+    public function updatepost(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string|min:1',
+            'tags' => 'required|string|min:2',
+            'postid' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->update_post($request->postid, auth()->user()->id, $request->content, $request->tags) ? 'SUCCESS' : 'FAIL';
     }
 
     public function __invoke(Request $request)

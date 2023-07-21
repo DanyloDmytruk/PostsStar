@@ -8,17 +8,17 @@
             Error has occured. Check input data again.
         </div>
 
-        <form id="createPostForm" method="POST">
+        <form id="updatePostForm" method="POST">
             @csrf
 
             <div class="form-group mb-2">
-                <label for="title">{{ $post->title }} </label>
+                <h4>{{ $post->title }} </h4>
             </div>
 
 
             <div class="form-group mb-2">
                 <label for="description">Content</label>
-                <textarea rows="17" class="form-control" name="content"></textarea>
+                <textarea rows="17" class="form-control" name="content">{{ $post->content }}</textarea>
             </div>
 
             <div class="form-group mb-4">
@@ -48,16 +48,17 @@
             $('#errorData').hide();
 
 
-            $('#createPostForm').submit(function(e) {
+            $('#updatePostForm').submit(function(e) {
                 e.preventDefault();
 
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 var formData = new FormData(this);
                 formData.append('_token', csrfToken);
+                formData.append('postid', '{{ $post->id }}');
 
                 $.ajax({
-                    url: "{{ route('ajax.createpost') }}",
+                    url: "{{ route('ajax.updatepost') }}",
                     type: "POST",
                     data: formData,
                     processData: false,

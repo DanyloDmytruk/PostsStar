@@ -97,4 +97,40 @@ class Service
     public function delete_post($id, $authorId){
         Posts::where('id', $id)->where('author_id', $authorId)->delete();
     }
+
+    public function update_post($id, $authorId, $content, $tags){
+        $post = Posts::where('id', $id)->where('author_id', $authorId)->firstOrFail();
+
+        //Change content
+        $post->content = $content;
+
+        //Add tags to post
+        foreach (explode(',', trim($tags)) as $tag) {
+            $tag_id = -1;
+            $tagRow = Tags::where('title', $tag)->first();
+
+            if (!$tagRow) //If tag does not exists, create it
+            {
+                $tag_id = Tags::create([
+                    'title' => $tag
+                ])->id;
+            }
+            else
+            {
+                $tag_id = $tagRow->id;
+            }
+
+            //Link tags to post
+            PostTag::firstOrCreate([
+                'tag_id' => $tag_id,
+                'post_id' => $post->id,
+            ]);
+        }
+
+        $post->save();
+
+        return true;
+
+    }
+
 }
