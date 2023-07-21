@@ -12,41 +12,30 @@
             @csrf
 
             <div class="form-group mb-2">
-                <label for="title"> {{ $post->title }} </label>
+                <label for="title">{{ $post->title }} </label>
             </div>
 
-            <div class="form-group mb-2">
-                <label for="image">Post Image</label>
-                <input id="image" type="file" class="form-control"
-                    name="image" value="{{ old('image') }}" required>
-            </div>
 
             <div class="form-group mb-2">
                 <label for="description">Content</label>
                 <textarea rows="17" class="form-control" name="content"></textarea>
             </div>
 
-
-            <div class="form-group mb-2">
-                <label for="title">Category </label>
-                <select name="category" class="form-select mb-2" aria-label="category">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->title }}</option>
-                    @endforeach
-                </select>
-            </div>
-
             <div class="form-group mb-4">
                 <label for="title">Tags </label>
                 <small> (separated with commas)</small>
-                <input type="text" class="form-control" id="tags" name="tags">
+                <input type="text" class="form-control" id="tags" name="tags"
+                value="@foreach ($post->tags as $tag){{$tag->title.', '}}@endforeach">
+                
+
             </div>
+
 
 
 
             <div class="form-group mb-1">
                 <button type="submit" class="mr-2 btn btn-primary">
-                    <i class="fa-solid fa-plus"></i> Create
+                    <i class="fa-solid fa-square-pen"></i> Update
                 </button>
                 <button type="button" class="mr-2 btn btn-danger" onclick="location.href='{{ route('home') }}'">
                     <i class="fa-solid fa-xmark"></i> Cancel
