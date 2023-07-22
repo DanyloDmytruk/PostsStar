@@ -46,6 +46,8 @@ Route::group(['middleware'=>'user'], function(){
         Route::delete('/deletepost', 'AjaxController@deletepost')->name('ajax.deletepost');
         Route::post('/updatepost', 'AjaxController@updatepost')->name('ajax.updatepost');
         Route::post('/createcomment', 'AjaxController@createcomment')->name('ajax.createcomment');
+        Route::post('/likepost', 'AjaxController@likepost')->name('ajax.likepost');
+        Route::post('/dislikepost', 'AjaxController@dislikepost')->name('ajax.dislikepost');
     });
     
 

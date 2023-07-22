@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+
 class Posts extends Model
 {
     use HasFactory;
@@ -18,6 +20,10 @@ class Posts extends Model
         return $this->belongsTo(Categories::class, 'category_id', 'id');
     }
 
+    public function usersLiked()
+    {
+        return $this->belongsToMany(User::class, 'post_likes', 'post_id', 'author_id');
+    }
 
     public function tags()
     {

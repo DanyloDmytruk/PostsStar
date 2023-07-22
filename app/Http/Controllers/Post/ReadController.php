@@ -17,12 +17,12 @@ class ReadController extends BaseController
     {
         $post = Posts::find($id);
         $postComments = $post->comments;
+        $userCommentsLiked = null;
 
         $pageTitle = $post->title.' - PostsStar';
         $activeLink = 'null';
         $mainTitle = $post->title;
 
-        
         return view('post.read', compact('pageTitle', 'activeLink', 'mainTitle', 'post', 'postComments'));
     }
 }

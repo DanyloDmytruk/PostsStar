@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-1">
                         <div class="d-flex justify-content-center">
-                            <img src="{{ asset('avatars/' . auth()->user()->avatar) }}" title="{{ auth()->user()->name }}"
+                            <img src="{{ asset('avatars/' . $post->author->avatar) }}" title="{{ $post->author->name }}"
                                 style="border-radius: 5%; height: 5em; width: 5em">
                         </div>
                         <div class="d-flex justify-content-center">
@@ -48,8 +48,20 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-4">
+
+
+                                    @if (in_array(auth()->user()->id, array_column($post->usersLiked->toArray(), 'id')))
+                                        <input type="hidden" name="isLikedPost" value="true">
+                                    @else
+                                        <input type="hidden" name="isLikedPost" value="false">
+                                    @endif
+
                                     <a>
-                                        <i class="fa-regular fa-heart"></i> {{ $post->likes }}
+                                        <form method="POST">
+                                            @csrf
+                                            <i id="like_post" class="fa-regular fa-heart"></i>
+                                            <span id="postLikesCount">{{ count($post->usersLiked) }}</span>
+                                        </form>
                                     </a>
                                 </div>
                                 <div class="col-1">
@@ -106,7 +118,8 @@
                 <div class="row border-bottom mt-1 mb-2">
                     <div class="col-1">
                         <div class="d-flex justify-content-center">
-                            <img src="{{ asset('avatars/' . auth()->user()->avatar) }}" title="{{ auth()->user()->name }}"
+                            <img src="{{ asset('avatars/' . $postComment->author->avatar) }}"
+                                title="{{ $postComment->author->name }}"
                                 style="border-radius: 5%; height: 5em; width: 5em">
                         </div>
                         <div class="d-flex justify-content-center">
@@ -174,59 +187,119 @@
 
 
         <script>
-            $('#errorData').hide();
-
-            $('#createCommentForm').submit(function(e) {
-                e.preventDefault();
-
-                var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                var formData = new FormData(this);
-                formData.append('_token', csrfToken);
-                formData.append('postid', '{{ $post->id }}');
-
-                $.ajax({
-                    url: "{{ route('ajax.createcomment') }}",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response == 'FAIL') {
-                            $('#errorData').show();
-                        } else {
-
-                            console.log(response.message);
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                        $('#errorData').show();
-                    }
-                });
-            });
-
-            function isClipboardAPIAvailable() {
-                return navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
-            }
-
-
-            function copyLinkToClipboard() {
-                const textToCopy = '{{ request()->fullUrl() }}';
-
-                if (isClipboardAPIAvailable()) {
-                    // Use Clipboard API to write the text to clipboard
-                    navigator.clipboard.writeText(textToCopy);
-                } else {
-                    // Fallback for browsers that don't support the Clipboard API
-                    console.warn('Clipboard API is not supported in this browser.');
-                }
-            }
-
-
             $(document).ready(function() {
+                $('#errorData').hide();
+
+                $('#createCommentForm').submit(function(e) {
+                    e.preventDefault();
+
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    var formData = new FormData(this);
+                    formData.append('_token', csrfToken);
+                    formData.append('postid', '{{ $post->id }}');
+
+                    $.ajax({
+                        url: "{{ route('ajax.createcomment') }}",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response == 'FAIL') {
+                                $('#errorData').show();
+                            } else {
+
+                                console.log(response.message);
+                                location.reload();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText);
+                            $('#errorData').show();
+                        }
+                    });
+                });
+
+                function isClipboardAPIAvailable() {
+                    return navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
+                }
+
+
+                function copyLinkToClipboard() {
+                    const textToCopy = '{{ request()->fullUrl() }}';
+
+                    if (isClipboardAPIAvailable()) {
+                        // Use Clipboard API to write the text to clipboard
+                        navigator.clipboard.writeText(textToCopy);
+                    } else {
+                        // Fallback for browsers that don't support the Clipboard API
+                        console.warn('Clipboard API is not supported in this browser.');
+                    }
+                }
+
+
+
                 $('#copyButton').on('click', copyLinkToClipboard);
+
+
+                if ($('input[name="isLikedPost"]').val() == 'true') {
+                    $('#like_post').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
+                }
+
+                function likePost() {
+
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    if ($('input[name="isLikedPost"]').val() == 'true') {
+                        $.ajax({
+                            url: "{{ route('ajax.dislikepost') }}",
+                            type: "POST",
+                            data: {
+                                postid: '{{ $post->id }}',
+                                '_token': csrfToken,
+                            },
+                            success: function(response) {
+                                $('#postLikesCount').text(response);
+                                console.log(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+
+
+                        });
+
+                        $('#like_post').removeClass('fa-solid fa-heart').addClass('fa-regular fa-heart');
+                        $('input[name="isLikedPost"]').val("false");
+
+                    } else {
+
+                        $.ajax({
+                            url: "{{ route('ajax.likepost') }}",
+                            type: "POST",
+                            data: {
+                                'postid': '{{ $post->id }}',
+                                '_token': csrfToken,
+                            },
+                            success: function(response) {
+                                $('#postLikesCount').text(response);
+                                console.log(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+
+                        });
+
+                        $('#like_post').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
+                        $('input[name="isLikedPost"]').val("true");
+                    }
+                }
+
+                $('#like_post').on('click', function(e) {
+                    likePost();
+                });
             });
         </script>
     @endsection

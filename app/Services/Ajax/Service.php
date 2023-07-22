@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Posts;
 use App\Models\PostTag;
 use App\Models\Tags;
+use App\Models\PostLikes;
 
 class Service
 {
@@ -143,6 +144,23 @@ class Service
         ]);
 
         return true;
+    }
+
+    public function like_post($authorId, $postId){
+    
+        PostLikes::firstOrCreate([
+            'post_id' => $postId,
+            'author_id' => $authorId,
+        ]);
+
+        return PostLikes::count();
+    }
+
+    public function dislike_post($authorId, $postId){
+    
+        PostLikes::where('author_id', $authorId)->where('post_id', $postId)->delete();
+
+        return PostLikes::count();
     }
 
 }

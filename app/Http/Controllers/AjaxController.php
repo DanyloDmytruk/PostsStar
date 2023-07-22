@@ -73,6 +73,24 @@ class AjaxController extends Controller
         return $this->ajaxService->create_comment($request->content, auth()->user()->id, $request->postid) ? 'SUCCESS' : 'FAIL';
     }
 
+    public function dislikepost(Request $request)
+    {
+        $request->validate([
+            'postid' => 'required|integer|min:1',
+        ]);
+
+        return  $this->ajaxService->dislike_post(auth()->user()->id, $request->postid);
+    }
+
+    public function likepost(Request $request)
+    {
+        $request->validate([
+            'postid' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->like_post(auth()->user()->id, $request->postid);
+    }
+
     
 
     public function __invoke(Request $request)
