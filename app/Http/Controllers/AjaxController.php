@@ -91,6 +91,24 @@ class AjaxController extends Controller
         return $this->ajaxService->like_post(auth()->user()->id, $request->postid);
     }
 
+    public function dislikecomment(Request $request)
+    {
+        $request->validate([
+            'commentid' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->dislike_comment(auth()->user()->id, $request->commentid);
+    }
+
+    public function likecomment(Request $request)
+    {
+        $request->validate([
+            'commentid' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->like_comment(auth()->user()->id, $request->commentid);
+    }
+
     
 
     public function __invoke(Request $request)

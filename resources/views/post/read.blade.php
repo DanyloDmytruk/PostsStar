@@ -143,8 +143,28 @@
                                 <br>
                                 <div class="row">
                                     <div class="d-flex justify-content-end">
-                                        <small class="text-muted"><i class="fa-regular fa-heart"></i>
-                                            {{ $postComment->likes }}</small>
+                                        <form method="POST">
+                                            @if (in_array(auth()->user()->id, array_column($postComment->usersLiked->toArray(), 'id')))
+                                                <input type="hidden" id="{{ $postComment->id }}" name="isLikedComment"
+                                                    value="true">
+                                            @else
+                                                <input type="hidden" id="{{ $postComment->id }}" name="isLikedComment"
+                                                    value="false">
+                                            @endif
+
+                                            <small class="text-muted">
+                                                @if (in_array(auth()->user()->id, array_column($postComment->usersLiked->toArray(), 'id')))
+                                                    <i id="{{ $postComment->id }}" name="like_comment"
+                                                        class="fa-solid fa-heart"></i>
+                                                @else
+                                                    <i id="{{ $postComment->id }}" name="like_comment"
+                                                        class="fa-regular fa-heart"></i>
+                                                @endif
+
+                                                <span id="{{ $postComment->id }}"
+                                                    name="commentLikesCount">{{ $postComment->likes }}</span>
+                                            </small>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -247,6 +267,8 @@
                     $('#like_post').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
                 }
 
+
+
                 function likePost() {
 
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -300,6 +322,66 @@
                 $('#like_post').on('click', function(e) {
                     likePost();
                 });
+
+
+
+
+                $('i[name="like_comment"]').on('click', function(e) {
+                    likeComment($(this).attr('id'));
+                });
+
+                function likeComment(id) {
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    if ($('input[name="isLikedComment"][id="' + id + '"]').val() == 'true') {
+                        $.ajax({
+                            url: "{{ route('ajax.dislikecomment') }}",
+                            type: "POST",
+                            data: {
+                                commentid: id,
+                                '_token': csrfToken,
+                            },
+                            success: function(response) {
+                                $('span[name="commentLikesCount"][id="' + id + '"]').text(response);
+
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+
+
+                        });
+
+                        $('i[name="like_comment"][id="' + id + '"]').removeClass('fa-solid fa-heart').addClass(
+                            'fa-regular fa-heart');
+                        $('input[name="isLikedComment"][id="' + id + '"]').val("false");
+
+                    } else {
+
+                        $.ajax({
+                            url: "{{ route('ajax.likecomment') }}",
+                            type: "POST",
+                            data: {
+                                commentid: id,
+                                '_token': csrfToken,
+                            },
+                            success: function(response) {
+                                $('span[name="commentLikesCount"][id="' + id + '"]').text(response);
+                                console.log(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+
+
+                        });
+
+                        $('i[name="like_comment"][id="' + id + '"]').removeClass('fa-regular fa-heart').addClass(
+                            'fa-solid fa-heart');
+                        $('input[name="isLikedComment"][id="' + id + '"]').val("true");
+                    }
+                }
+
             });
         </script>
     @endsection

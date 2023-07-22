@@ -11,5 +11,5 @@ class CommentLikes extends Model
 
     protected $guarded = false;
 
-
+    
 }

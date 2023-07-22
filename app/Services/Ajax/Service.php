@@ -2,6 +2,7 @@
 
 namespace App\Services\Ajax;
 
+use App\Models\CommentLikes;
 use App\Models\Comments;
 use App\Models\User;
 use App\Models\Posts;
@@ -46,7 +47,7 @@ class Service
         return true;
     }
 
-    public function create_post($userId, $image, $title, $content, $category, $tags) : bool
+    public function create_post($userId, $image, $title, $content, $category, $tags): bool
     {
         $user = User::find($userId);
 
@@ -80,9 +81,7 @@ class Service
                 $tag_id = Tags::create([
                     'title' => $tag
                 ])->id;
-            }
-            else
-            {
+            } else {
                 $tag_id = $tagRow->id;
             }
 
@@ -96,11 +95,13 @@ class Service
         return true;
     }
 
-    public function delete_post($id, $authorId){
+    public function delete_post($id, $authorId)
+    {
         Posts::where('id', $id)->where('author_id', $authorId)->delete();
     }
 
-    public function update_post($id, $authorId, $content, $tags){
+    public function update_post($id, $authorId, $content, $tags)
+    {
         $post = Posts::where('id', $id)->where('author_id', $authorId)->firstOrFail();
 
         //Change content
@@ -116,9 +117,7 @@ class Service
                 $tag_id = Tags::create([
                     'title' => $tag
                 ])->id;
-            }
-            else
-            {
+            } else {
                 $tag_id = $tagRow->id;
             }
 
@@ -132,10 +131,10 @@ class Service
         $post->save();
 
         return true;
-
     }
 
-    public function create_comment($content, $authorId, $postId){
+    public function create_comment($content, $authorId, $postId)
+    {
 
         Comments::create([
             'content' => $content,
@@ -146,21 +145,67 @@ class Service
         return true;
     }
 
-    public function like_post($authorId, $postId){
-    
-        PostLikes::firstOrCreate([
-            'post_id' => $postId,
-            'author_id' => $authorId,
-        ]);
+    public function like_post($authorId, $postId)
+    {
+        if (PostLikes::where('post_id', $postId)->where('author_id', $authorId)->count() == 0) {
+            $post = Posts::find($postId);
+            $post->likes++;
+            $post->save();
 
-        return PostLikes::count();
+
+            PostLikes::firstOrCreate([
+                'post_id' => $postId,
+                'author_id' => $authorId,
+            ]);
+        }
+
+        return PostLikes::where('post_id', $postId)->count(); //return post likes
     }
 
-    public function dislike_post($authorId, $postId){
-    
-        PostLikes::where('author_id', $authorId)->where('post_id', $postId)->delete();
+    public function dislike_post($authorId, $postId)
+    {
 
-        return PostLikes::count();
+        if (PostLikes::where('post_id', $postId)->where('author_id', $authorId)->count() != 0) {
+            $post = Posts::find($postId);
+            $post->likes--;
+            $post->save();
+
+
+            PostLikes::where('author_id', $authorId)->where('post_id', $postId)->delete();
+        }
+
+        return PostLikes::where('post_id', $postId)->count(); //return post likes
     }
 
+    public function like_comment($authorId, $commentId)
+    {
+
+        if (CommentLikes::where('comment_id', $commentId)->where('author_id', $authorId)->count() == 0) {
+            $comment = Comments::find($commentId);
+            $comment->likes++;
+            $comment->save();
+
+
+            CommentLikes::firstOrCreate([
+                'comment_id' => $commentId,
+                'author_id' => $authorId,
+            ]);
+        }
+
+        return CommentLikes::where('comment_id', $commentId)->count(); //return comment likes
+    }
+
+    public function dislike_comment($authorId, $commentId)
+    {
+
+        if (CommentLikes::where('comment_id', $commentId)->where('author_id', $authorId)->count() != 0) {
+            $comment = Comments::find($commentId);
+            $comment->likes--;
+            $comment->save();
+
+            CommentLikes::where('author_id', $authorId)->where('comment_id', $commentId)->delete();
+        }
+
+        return CommentLikes::where('comment_id', $commentId)->count(); //return comment likes
+    }
 }
