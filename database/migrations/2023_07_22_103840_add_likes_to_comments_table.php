@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPostIdToCommentsTable extends Migration
+class AddLikesToCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class AddPostIdToCommentsTable extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->unsignedBigInteger('post_id')->nullable()->after('author_id');
-            $table->index('post_id', 'post_idx');
-            $table->foreign('post_id', 'post_fk')->on('posts')->references('id');
+            $table->unsignedBigInteger('likes')->nullable()->default(0)->after('content');
         });
     }
 
@@ -28,7 +26,7 @@ class AddPostIdToCommentsTable extends Migration
     public function down()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->dropColumn('post_id');
+            $table->dropColumn('likes');
         });
     }
 }

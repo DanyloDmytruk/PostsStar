@@ -2,6 +2,7 @@
 
 namespace App\Services\Ajax;
 
+use App\Models\Comments;
 use App\Models\User;
 use App\Models\Posts;
 use App\Models\PostTag;
@@ -131,6 +132,17 @@ class Service
 
         return true;
 
+    }
+
+    public function create_comment($content, $authorId, $postId){
+
+        Comments::create([
+            'content' => $content,
+            'author_id' => $authorId,
+            'post_id' => $postId,
+        ]);
+
+        return true;
     }
 
 }

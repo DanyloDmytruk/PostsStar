@@ -16,11 +16,13 @@ class ReadController extends BaseController
     public function __invoke($id)
     {
         $post = Posts::find($id);
+        $postComments = $post->comments;
 
         $pageTitle = $post->title.' - PostsStar';
         $activeLink = 'null';
         $mainTitle = $post->title;
+
         
-        return view('post.read', compact('pageTitle', 'activeLink', 'mainTitle', 'post'));
+        return view('post.read', compact('pageTitle', 'activeLink', 'mainTitle', 'post', 'postComments'));
     }
 }

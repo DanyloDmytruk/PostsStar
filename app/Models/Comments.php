@@ -15,12 +15,12 @@ class Comments extends Model
 
     public function author()
     {
-        $this->belongsTo(User::class, 'author_id', 'id');
+        return $this->belongsTo(User::class, 'author_id', 'id');
     }
 
     public function post()
     {
-        $this->belongsTo(Posts::class, 'post_id', 'id');
+        return $this->belongsTo(Posts::class, 'post_id', 'id');
     }
 
 }

@@ -63,6 +63,18 @@ class AjaxController extends Controller
         return $this->ajaxService->update_post($request->postid, auth()->user()->id, $request->content, $request->tags) ? 'SUCCESS' : 'FAIL';
     }
 
+    public function createcomment(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string|min:1',
+            'postid' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->create_comment($request->content, auth()->user()->id, $request->postid) ? 'SUCCESS' : 'FAIL';
+    }
+
+    
+
     public function __invoke(Request $request)
     {
         return true;
