@@ -18,6 +18,11 @@ class UpdateController extends BaseController
         $categories = Categories::all();
         $post = Posts::find($id);
 
+        if(auth()->user()->id != $post->author_id)
+        {
+            abort(403, 'You do not have access to view this page.');
+        }
+
 
         $pageTitle = 'Update post - PostsStar';
         $activeLink = 'null';

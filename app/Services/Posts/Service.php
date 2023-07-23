@@ -2,6 +2,8 @@
 
 namespace App\Services\Posts;
 
+use App\Models\User;
+
 class Service
 {
     public function trim_post_content_for_list($maxCharCount = 60, $inputString)
@@ -36,8 +38,7 @@ class Service
                 "tags" => array(),
             );
 
-            foreach($post->tags as $tag)
-            {   
+            foreach ($post->tags as $tag) {
                 array_push($elementPost["tags"], $tag);
             }
 
@@ -46,5 +47,32 @@ class Service
         }
 
         return json_encode($result);
+    }
+
+
+    public function getTopBlogs()
+    {
+
+        $blogs = User::all();
+        $blogPosts = array();
+
+        foreach ($blogs as $blog) {
+            $blogPosts[$blog->id] = $blog->posts->count();
+        }
+
+        krsort($blogPosts);
+
+        $topBlogs = array();
+        $index = 0;
+        foreach ($blogPosts as $id => $postsCount) {
+            if ($index < 3) {
+                array_push($topBlogs, User::find($id));
+            } else {
+                break;
+            }
+            $index++;
+        }
+
+        return $topBlogs;
     }
 }

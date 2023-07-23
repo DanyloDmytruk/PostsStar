@@ -36,10 +36,13 @@ class BlogController extends Controller
 
         $lastestPosts = $latestPosts = Posts::orderBy('created_at', 'desc')->take(3)->get();;
 
-        $pageTitle = 'Home - PostsStar';
+
+        $userBlog = User::find($id);
+
+        $pageTitle = $userBlog->name.' - PostsStar';
         $activeLink = 'null';
 
-        return view('home', compact('pageTitle', 'activeLink', 'userPosts', 'lastestPosts'));
+        return view('blog.blog', compact('pageTitle', 'activeLink', 'userPosts', 'userBlog', 'lastestPosts'));
         
     }
 }

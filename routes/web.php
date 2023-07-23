@@ -23,7 +23,6 @@ Route::group(['middleware'=>'user'], function(){
         Route::get('/posts', 'PostsController')->name('posts');
     
         Route::group(['prefix'=>'post'], function(){
-            //Route::get('/edit/{id}', 'PostsController')->name('posts.edit');
             Route::get('/read/{id}', 'ReadController')->name('posts.read');
             Route::get('/create', 'CreateController')->name('posts.create');
             Route::get('/update/{id}', 'UpdateController')->name('posts.update');

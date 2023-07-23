@@ -21,10 +21,10 @@
                     <div class="col-1">
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('avatars/' . $post->author->avatar) }}" title="{{ $post->author->name }}"
-                                style="border-radius: 5%; height: 5em; width: 5em">
+                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em" onclick="location.href='{{ route("blog", ['id'=>$post->author->id]) }}'">
                         </div>
                         <div class="d-flex justify-content-center">
-                            {{ $post->author->name }}
+                            <span style="cursor: pointer;" onclick="location.href='{{ route("blog", ['id'=>$post->author->id]) }}'">{{ $post->author->name }}</span>
                         </div>
 
                     </div>
@@ -120,10 +120,10 @@
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('avatars/' . $postComment->author->avatar) }}"
                                 title="{{ $postComment->author->name }}"
-                                style="border-radius: 5%; height: 5em; width: 5em">
+                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em" onclick="location.href='{{ route("blog", ['id'=>$postComment->author->id]) }}'">
                         </div>
                         <div class="d-flex justify-content-center">
-                            {{ $postComment->author->name }}
+                            <span style="cursor: pointer;" onclick="location.href='{{ route("blog", ['id'=>$postComment->author->id]) }}'">{{ $postComment->author->name }}</span>
                         </div>
 
                     </div>

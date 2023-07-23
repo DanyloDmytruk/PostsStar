@@ -35,11 +35,13 @@ class HomeController extends Controller
             return $this->service->format_paginative_posts_ajax($userPosts);
         }
 
-        $lastestPosts = $latestPosts = Posts::orderBy('created_at', 'desc')->take(3)->get();;
+        $lastestPosts = Posts::orderBy('created_at', 'desc')->take(3)->get();
 
         $pageTitle = 'Home - PostsStar';
         $activeLink = 'home';
 
-        return view('home', compact('pageTitle', 'activeLink', 'userPosts', 'lastestPosts'));
+        $topBlogs = $this->service->getTopBlogs();
+
+        return view('home', compact('pageTitle', 'activeLink', 'userPosts', 'lastestPosts', 'topBlogs'));
     }
 }

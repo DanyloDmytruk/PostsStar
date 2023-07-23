@@ -57,7 +57,8 @@
                                     <div class="d-flex justify-content-end">
                                         <div class="p-1">
                                             <small class="text-muted">
-                                                <i id="{{ $userPost->id }}" style="color: #d59319" class="fa-solid fa-pencil update-post"></i>
+                                                <i id="{{ $userPost->id }}" style="color: #d59319"
+                                                    class="fa-solid fa-pencil update-post"></i>
                                                 <i onclick="DeletePostModalForm('{{ $userPost->id }}')"
                                                     class="fa-solid fa-trash delete-post" data-toggle="modal"
                                                     data-target="#deletePostModal" style="color: #ee1515"></i>
@@ -85,16 +86,16 @@
                 </div>
 
                 @if ($userPosts->total() > 5)
-                <div class="container">
-                    <div class="row justify-content-md-center mb-1 mt-2">
-                        <div class="col-md-auto">
-                            <button type="button" id="loadMoreBtn" class="btn btn-secondary"><i class="fa-solid fa-spinner"
-                                    id="loadmoreIcon"></i> Load
-                                More </button>
+                    <div class="container">
+                        <div class="row justify-content-md-center mb-1 mt-2">
+                            <div class="col-md-auto">
+                                <button type="button" id="loadMoreBtn" class="btn btn-secondary"><i
+                                        class="fa-solid fa-spinner" id="loadmoreIcon"></i> Load
+                                    More </button>
+                            </div>
+                            <input type="hidden" id="currentPage" value="1">
                         </div>
-                        <input type="hidden" id="currentPage" value="1">
                     </div>
-                </div>
                 @endif
 
 
@@ -103,24 +104,36 @@
 
         <div>
             <div class="flex-shrink-0 p-3" style="width: 280px;">
-                <span class="fs-6 border-bottom">ARCHIVE POSTS</span>
-                <a href="{{ route('posts') }}"
-                    class="d-flex align-items-center pb-3 mt-2 mb-3 link-dark text-decoration-none">
-                    <span class="fs-6 fw-semibold"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Read
-                        Lastest Posts</span>
-                </a>
-
-                <span class="fs-6 border-bottom">TOP BLOGS</span>
-                <a href="/" class="d-flex align-items-center pb-3 mb-3 mt-2 link-dark text-decoration-none ">
-                    <span class="fs-6 fw-semibold"></span>
-                </a>
-
-                <span class="fs-6 border-bottom">LAST POSTS</span>
-                @foreach ($lastestPosts as $latestPost)
-                    <a href="{{ route('posts.read', ['id'=>$latestPost->id]) }}" class="d-flex link-dark text-decoration-none">
-                        <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-comment"></i> {{ $latestPost->title }}</span><br>
+                <div>
+                    <span class="fs-6 border-bottom">ARCHIVE POSTS</span>
+                    <a href="{{ route('posts') }}"
+                        class="d-flex align-items-center pb-3 mt-2 mb-3 link-dark text-decoration-none">
+                        <span class="fs-6 fw-semibold"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Read
+                            Lastest Posts</span>
                     </a>
-                @endforeach
+                </div>
+
+                <div class="mb-3">
+                    <span class="fs-6 border-bottom">TOP BLOGS</span>
+                    @foreach ($topBlogs as $topBlog)
+                        <a href="{{ route('posts.read', ['id' => $topBlog->id]) }}"
+                            class="d-flex link-dark text-decoration-none">
+                            <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-user"></i>
+                                {{ $topBlog->name }}</span><br>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div>
+                    <span class="fs-6 border-bottom">LAST POSTS</span>
+                    @foreach ($lastestPosts as $latestPost)
+                        <a href="{{ route('posts.read', ['id' => $latestPost->id]) }}"
+                            class="d-flex link-dark text-decoration-none">
+                            <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-comment"></i>
+                                {{ $latestPost->title }}</span><br>
+                        </a>
+                    @endforeach
+                </div>
 
             </div>
         </div>
@@ -200,7 +213,7 @@
             $('.list-group-item').on('click', function(e) {
                 if ($(e.target).hasClass('update-post')) {
                     e.preventDefault();
-                    location.href = "/post/update/"+$(e.target).attr('id');
+                    location.href = "/post/update/" + $(e.target).attr('id');
                 }
             });
 
@@ -283,7 +296,8 @@
                                 '<strong class="mb-1">' + post.title + '</strong>' +
                                 '<div class="d-flex justify-content-end">' +
                                 '<div class="p-1">' +
-                                '<small class="text-muted"><i id="'+post.id+'" style="color: #d59319" class="fa-solid fa-pencil update-post"></i> <i class="fa-solid fa-trash delete-post" data-toggle="modal" data-target="#deletePostModal" style="color: #ee1515"></i></small>' +
+                                '<small class="text-muted"><i id="' + post.id +
+                                '" style="color: #d59319" class="fa-solid fa-pencil update-post"></i> <i class="fa-solid fa-trash delete-post" data-toggle="modal" data-target="#deletePostModal" style="color: #ee1515"></i></small>' +
                                 '</div>' +
                                 '<div class="p-1">' +
                                 '<small class="text-muted">' + post.date + '</small>' +
