@@ -30,6 +30,14 @@ Route::group(['middleware'=>'user'], function(){
         });
     });
 
+    //Blog
+    Route::group(['namespace'=>'Blog'], function(){
+
+        Route::group(['prefix'=>'blog'], function(){
+            Route::get('/{id}', 'BlogController@index')->name('blog');
+        });
+    });
+
 
     //Logout
     Route::get('/logout', function(){
