@@ -47,7 +47,7 @@
                     <form method="GET" action="{{ route('search', ['word' => '__word__']) }}" class="d-flex" role="search">
                         @csrf
 
-                        <input class="form-control me-1" type="search" name="word" placeholder="Search" aria-label="Search">
+                        <input class="form-control me-1" type="search" name="word" maxlength="1024" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit"><i
                                 class="fa-solid fa-magnifying-glass"></i></button>
                     </form>

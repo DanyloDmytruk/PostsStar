@@ -18,6 +18,6 @@ class SearchController extends Controller
         $mainTitle = 'Search results (5300)';
 
         
-        dd('Search');
+        return view('search', compact('pageTitle', 'activeLink', 'mainTitle'));
     }
 }
