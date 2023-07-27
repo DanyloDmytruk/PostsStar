@@ -2,85 +2,144 @@
 
 @inject('service', 'App\Services\Posts\Service')
 @section('main_content')
-    <div class="d-flex mt-5">
-        <div class="flex-fill">
-            <div class="container border-bottom" style="padding-bottom: 1em; margin-bottom: 1em">
-                <div class="row justify-content-md-left">
-                    <div class="col-md-1">
-                        <img src="avatars/{{ auth()->user()->avatar }}" title="{{ auth()->user()->name }}"
-                            style="border-radius: 5%; height: 5em; width: 5em">
-                        <a data-toggle="modal" data-target="#myModal" href="#" id="photoLink"><small class="fs-8"><i
-                                    class="fa-solid fa-pen-to-square"></i>
-                                Photo</small></button></a>
-                    </div>
-
-                    <div class="col-md-auto">
-                        <div class="row justify-content-md-left mb-2">
-                            <div style="width: 2.1em; padding-right: 0">
-                                <i style="font-size: 21px" class="fa-solid fa-circle-info"> </i>
-                            </div>
-                            <div class="col-11">
-                                <input id="bio" maxlength="70" style="width: 50em; margin-right: 0; padding-right: 0"
-                                    placeholder="Enter your bio" class="border-0 mt-0 mb-0"
-                                    value="{{ auth()->user()->bio }}">
-                            </div>
-                        </div>
-
-                        <div class="row justify-content-md-left">
-                            <div style="width: 2.1em; padding-right: 0">
-                                <i style="font-size: 20px" class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div class="col-11">
-                                <label>{{ auth()->user()->email }}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            
-        </div>
-
-        <div>
-            <div class="flex-shrink-0 p-3" style="width: 280px;">
-                {{-- <div>
-                    <span class="fs-6 border-bottom">ARCHIVE POSTS</span>
-                    <a href="{{ route('posts') }}"
-                        class="d-flex align-items-center pb-3 mt-2 mb-3 link-dark text-decoration-none">
-                        <span class="fs-6 fw-semibold"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Read
-                            Lastest Posts</span>
-                    </a>
-                </div>
-
-                <div class="mb-3">
-                    <span class="fs-6 border-bottom">TOP BLOGS</span>
-                    @foreach ($topBlogs as $topBlog)
-                        <a href="{{ route('posts.read', ['id' => $topBlog->id]) }}"
-                            class="d-flex link-dark text-decoration-none">
-                            <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-user"></i>
-                                {{ $topBlog->name }}</span><br>
-                        </a>
-                    @endforeach
-                </div>
-
-                <div>
-                    <span class="fs-6 border-bottom">LAST POSTS</span>
-                    @foreach ($lastestPosts as $latestPost)
-                        <a href="{{ route('posts.read', ['id' => $latestPost->id]) }}"
-                            class="d-flex link-dark text-decoration-none">
-                            <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-comment"></i>
-                                {{ $latestPost->title }}</span><br>
-                        </a>
-                    @endforeach
-                </div> --}}
-
-            </div>
-        </div>
+    <div class="nav-scroller">
+        <nav class="nav nav-underline">
+            <a class="nav-link {{ $activeNavbar === 'all' || !$activeNavbar ? 'active' : '' }}"
+                href="{{ route('search', ['word' => $word, 'search' => 'all']) }}">All
+                <span class="badge badge-success bg-primary align-text-bottom">{{ $searchCountResults['all'] }}</span>
+            </a>
+            <a class="nav-link {{ $activeNavbar === 'blogs' ? 'active' : '' }}"
+                href="{{ route('search', ['word' => $word, 'search' => 'blogs']) }}">
+                Blogs
+                <span class="badge badge-success bg-success align-text-bottom">{{ $searchCountResults['blogs'] }}</span>
+            </a>
+            <a class="nav-link {{ $activeNavbar === 'posts' ? 'active' : '' }}"
+                href="{{ route('search', ['word' => $word, 'search' => 'posts']) }}">
+                Posts
+                <span class="badge badge-pill bg-danger align-text-bottom">{{ $searchCountResults['posts'] }}</span>
+            </a>
+        </nav>
     </div>
+    <div class="d-flex mt-4">
+        <div class="flex-fill">
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 80em;">
+
+                <div class="list-group list-group-flush border-bottom scrollarea">
+
+
+                    @if ($activeNavbar === 'all' || !$activeNavbar)
+                        @foreach ($posts as $post)
+                            <a href="{{ route('posts.read', ['id' => $post->id]) }}"
+                                class="list-group-item list-group-item-action py-2 lh-sm">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <strong class="mb-1">{{ $post->title }}</strong>
+                                    <small class="text-muted">{{ date('H:i j/n/Y', strtotime($post->created_at)) }}</small>
+                                </div>
+                                <div class="col-10 mb-0 small">
+                                    {{ Str::length($post->content) > 60 ? $service->trim_post_content_for_list(80, $post->content) . '...' : $post->content }}
+                                </div>
+                                <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>
+                                    {{ $post->category->title }}</div>
+                                <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
+                                    @foreach ($post->tags as $tag)
+                                        <i class="fa-solid fa-tag"></i> {{ $tag->title }}
+                                    @endforeach
+                                </div>
+                            </a>
+                        @endforeach
+
+
+                        @foreach ($users as $user)
+                            <a href="{{ route('blog', ['id' => $user->id]) }}"
+                                class="list-group-item list-group-item-action py-2 lh-sm">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="{{ asset('avatars/' . $user->avatar) }}" title="{{ $user->name }}"
+                                                style="border-radius: 5%; height: 4em; width: 4em">
+                                        </div>
+                                        <div class="col-md-11">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <strong class="mb-1">{{ $user->name }}</strong>
+                                            </div>
+                                            <div class="d-flex w-100 align-items-center">
+                                                <i style="font-size: 19px; margin-right: 4px"
+                                                    class="fa-solid fa-circle-info"></i><label class="text-muted">
+                                                    {{ $user->bio ? $user->bio : 'Blogging at PostsStar!' }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    @elseif($activeNavbar === 'blogs')
+                        @foreach ($users as $user)
+                            <a href="{{ route('blog', ['id' => $user->id]) }}"
+                                class="list-group-item list-group-item-action py-2 lh-sm">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="{{ asset('avatars/' . $user->avatar) }}" title="{{ $user->name }}"
+                                                style="border-radius: 5%; height: 4em; width: 4em">
+                                        </div>
+                                        <div class="col-md-11">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <strong class="mb-1">{{ $user->name }}</strong>
+                                            </div>
+                                            <div class="d-flex w-100 align-items-center">
+                                                <i style="font-size: 19px; margin-right: 4px"
+                                                    class="fa-solid fa-circle-info"></i><label class="text-muted">
+                                                    {{ $user->bio ? $user->bio : 'Blogging at PostsStar!' }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    @elseif($activeNavbar === 'posts')
+                        @foreach ($posts as $post)
+                            <a href="{{ route('posts.read', ['id' => $post->id]) }}"
+                                class="list-group-item list-group-item-action py-2 lh-sm">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <strong class="mb-1">{{ $post->title }}</strong>
+                                    <small class="text-muted">{{ date('H:i j/n/Y', strtotime($post->created_at)) }}</small>
+                                </div>
+                                <div class="col-10 mb-0 small">
+                                    {{ Str::length($post->content) > 60 ? $service->trim_post_content_for_list(80, $post->content) . '...' : $post->content }}
+                                </div>
+                                <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>
+                                    {{ $post->category->title }}</div>
+                                <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
+                                    @foreach ($post->tags as $tag)
+                                        <i class="fa-solid fa-tag"></i> {{ $tag->title }}
+                                    @endforeach
+                                </div>
+                            </a>
+                        @endforeach
+                    @endif
+
+                    {{-- <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">11</strong>
+                            <small class="text-muted">11</small>
+                        </div>
+                        <div class="col-10 mb-0 small">
+                            111
+                        </div>
+                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>
+                            11</div>
+                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
+
+                        </div>
+                    </a> --}}
 
 
 
+                </div>
 
-@endsection
+
+            </div>
+
+
+        </div>
+    @endsection

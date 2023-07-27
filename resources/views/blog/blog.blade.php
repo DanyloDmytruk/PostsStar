@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-11">
                                 <input id="bio" maxlength="70" style="width: 50em; margin-right: 0; padding-right: 0"
-                                    placeholder="Enter your bio" class="border-0 mt-0 mb-0" value="{{ $userBlog->bio }}"
+                                    placeholder="Blogging at PostsStar!" class="border-0 mt-0 mb-0" value="{{ $userBlog->bio }}"
                                     readonly>
                             </div>
                         </div>
