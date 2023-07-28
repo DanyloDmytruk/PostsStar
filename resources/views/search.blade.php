@@ -118,21 +118,6 @@
                         @endforeach
                     @endif
 
-                    {{-- <a href="#" class="list-group-item list-group-item-action py-2 lh-sm">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1">11</strong>
-                            <small class="text-muted">11</small>
-                        </div>
-                        <div class="col-10 mb-0 small">
-                            111
-                        </div>
-                        <div class="col-10 mb-0 small"><span class="text-primary">Category:</span>
-                            11</div>
-                        <div class="col-10 mb-0 small"><span class="text-success">Tags:</span>
-
-                        </div>
-                    </a> --}}
-
 
 
                 </div>
