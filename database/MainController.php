@@ -13,9 +13,6 @@ class MainController extends Controller
 {
     public function index()
     {  
-        $mainTitle = "Dashboard";
-        $activeElement = "dash";
-
         $totalPosts = Posts::count();
         $totalBlogs = User::count();
 
@@ -24,6 +21,6 @@ class MainController extends Controller
 
         $bannedUsers = User::where('is_banned', true)->get()->count();
 
-        return view('admin.main', compact('totalPosts', 'totalBlogs', 'lastWeekRegistrations', 'bannedUsers', 'mainTitle', 'activeElement'));
+        return view('admin.main', compact('totalPosts', 'totalBlogs', 'lastWeekRegistrations', 'bannedUsers'));
     }
 }

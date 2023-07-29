@@ -65,6 +65,8 @@ Route::group(['middleware' => 'user'], function () {
 Route::group(['middleware' => 'admin'], function () {
     Route::group(['namespace' => 'Admin'], function () {
         Route::get('/admin', 'MainController@index')->name('admin');
+        Route::get('/ban', 'BanController@index')->name('admin.ban');
+        
     });
 });
 
