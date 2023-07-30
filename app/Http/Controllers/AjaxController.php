@@ -118,6 +118,15 @@ class AjaxController extends Controller
         return $this->ajaxService->unban_user($request->id);
     }
 
+    public function banuser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->ban_user($request->id);
+    }
+
     
 
     public function __invoke(Request $request)

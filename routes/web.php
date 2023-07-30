@@ -58,6 +58,7 @@ Route::group(['middleware' => 'user'], function () {
         Route::post('/likecomment', 'AjaxController@likecomment')->name('ajax.likecomment');
         Route::post('/dislikecomment', 'AjaxController@dislikecomment')->name('ajax.dislikecomment');
         Route::post('/unbanuser', 'AjaxController@unbanuser')->name('ajax.unbanuser');
+        Route::post('/banuser', 'AjaxController@banuser')->name('ajax.banuser');
     });
 
     //Seachbar
@@ -68,6 +69,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::group(['namespace' => 'Admin'], function () {
         Route::get('/admin', 'MainController@index')->name('admin');
         Route::get('/ban', 'BanController@index')->name('admin.ban');
+        Route::get('/banuser', 'BanUserController@index')->name('admin.banuser');
         
     });
 });

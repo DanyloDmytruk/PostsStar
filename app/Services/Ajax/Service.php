@@ -222,4 +222,18 @@ class Service
 
         return false;
     }
+
+    public function ban_user($userId)
+    {
+        if(auth()->user()->role === 'admin')
+        {
+            $user = User::find($userId);
+            $user->is_banned = true;
+            $user->save();
+
+            return true;
+        }
+
+        return false;
+    }
 }

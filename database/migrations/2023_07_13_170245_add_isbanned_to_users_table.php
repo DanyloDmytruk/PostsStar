@@ -14,7 +14,7 @@ class AddIsbannedToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_banned')->nullable();
+            $table->boolean('is_banned')->nullable()->default(false);
         });
     }
 
