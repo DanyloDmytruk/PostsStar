@@ -99,8 +99,23 @@
               <i class="nav-icon fas fa-ban"></i>
               <p>
                 Ban
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.ban') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Banned Users</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ban User</p>
+                </a>
+              </li>
+            </ul>
             
           </li>
         </ul>
@@ -177,5 +192,8 @@
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+
+@yield('script')
+
 </body>
 </html>

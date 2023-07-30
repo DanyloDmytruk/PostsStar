@@ -109,6 +109,15 @@ class AjaxController extends Controller
         return $this->ajaxService->like_comment(auth()->user()->id, $request->commentid);
     }
 
+    public function unbanuser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->unban_user($request->id);
+    }
+
     
 
     public function __invoke(Request $request)

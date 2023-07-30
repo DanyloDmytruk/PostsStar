@@ -208,4 +208,18 @@ class Service
 
         return CommentLikes::where('comment_id', $commentId)->count(); //return comment likes
     }
+
+    public function unban_user($userId)
+    {
+        if(auth()->user()->role === 'admin')
+        {
+            $user = User::find($userId);
+            $user->is_banned = false;
+            $user->save();
+
+            return true;
+        }
+
+        return false;
+    }
 }

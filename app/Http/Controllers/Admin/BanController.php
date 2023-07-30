@@ -15,7 +15,8 @@ class BanController extends Controller
     {  
         $mainTitle = "Banned Users";
         $activeElement = "ban";
+        $bannedUsers = User::where('is_banned', true)->get();
 
-        return view('admin.ban', compact('mainTitle', 'activeElement'));
+        return view('admin.ban', compact('mainTitle', 'activeElement', 'bannedUsers'));
     }
 }
