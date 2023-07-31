@@ -158,9 +158,13 @@
                         <div class="container">
                             <div class="col-12">
                                 <div class="row">
-                                    <div class="d-flex justify-content-end">
-                                        <small style="cursor: pointer;" onclick="DeleteComment('{{ $postComment->id }}')" class="text-danger">Delete</small>
-                                    </div>
+                                    @if (auth()->user()->role === 'admin' || $postComment->author->id === auth()->user()->id)
+                                        <div class="d-flex justify-content-end">
+                                            <small style="cursor: pointer;"
+                                                onclick="DeleteComment('{{ $postComment->id }}')"
+                                                class="text-danger">Delete</small>
+                                        </div>
+                                    @endif
                                     <div class="d-flex justify-content-end">
                                         <small
                                             class="text-muted">{{ date('H:i j/n/Y', strtotime($postComment->created_at)) }}</small>
@@ -468,7 +472,7 @@
             }
 
 
-            function DeleteComment(id){
+            function DeleteComment(id) {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
@@ -485,8 +489,7 @@
                         console.log(xhr.responseText);
                     }
 
-                });   
+                });
             }
-
         </script>
     @endsection
