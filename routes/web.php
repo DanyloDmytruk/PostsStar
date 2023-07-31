@@ -59,6 +59,7 @@ Route::group(['middleware' => 'user'], function () {
         Route::post('/dislikecomment', 'AjaxController@dislikecomment')->name('ajax.dislikecomment');
         Route::post('/unbanuser', 'AjaxController@unbanuser')->name('ajax.unbanuser');
         Route::post('/banuser', 'AjaxController@banuser')->name('ajax.banuser');
+        Route::delete('/deletecomment', 'AjaxController@deletecomment')->name('ajax.deletecomment');
     });
 
     //Seachbar

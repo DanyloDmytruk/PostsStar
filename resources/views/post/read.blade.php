@@ -1,17 +1,36 @@
 @extends('layouts.main')
 
 @section('main_content')
-    <div>
-        <span class="badge bg-success" style="height: 12px"> </span> {{ $post->category->title }}
-    </div>
-    <div class="mb-1">
-        <i class="fa-solid fa-tag"></i>
-        @foreach ($post->tags as $tag)
-            {{ $tag->title }}
-        @endforeach
-    </div>
+    <div class="d-flex justify-content-between">
+        <div>
+            <div>
+                <span class="badge bg-success" style="height: 12px"> </span> {{ $post->category->title }}
+            </div>
+            <div class="mb-1">
+                <i class="fa-solid fa-tag"></i>
+                @foreach ($post->tags as $tag)
+                    {{ $tag->title }}
+                @endforeach
+            </div>
+        </div>
 
-
+        @if (auth()->user()->role === 'admin')
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Admin actions
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="cursor: pointer;" class="dropdown-item" onclick="DeletePost()">Delete Post</a>
+                        <a style="cursor: pointer;" class="dropdown-item" onclick="DeletePostAndBanUser()">Delete Post and
+                            Ban
+                            User</a>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 
     <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border-top" style="width: 89em;">
 
@@ -21,10 +40,12 @@
                     <div class="col-1">
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('avatars/' . $post->author->avatar) }}" title="{{ $post->author->name }}"
-                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em" onclick="location.href='{{ route("blog", ['id'=>$post->author->id]) }}'">
+                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em"
+                                onclick="location.href='{{ route('blog', ['id' => $post->author->id]) }}'">
                         </div>
                         <div class="d-flex justify-content-center">
-                            <span style="cursor: pointer;" onclick="location.href='{{ route("blog", ['id'=>$post->author->id]) }}'">{{ $post->author->name }}</span>
+                            <span style="cursor: pointer;"
+                                onclick="location.href='{{ route('blog', ['id' => $post->author->id]) }}'">{{ $post->author->name }}</span>
                         </div>
 
                     </div>
@@ -120,10 +141,12 @@
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('avatars/' . $postComment->author->avatar) }}"
                                 title="{{ $postComment->author->name }}"
-                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em" onclick="location.href='{{ route("blog", ['id'=>$postComment->author->id]) }}'">
+                                style="cursor: pointer; border-radius: 5%; height: 5em; width: 5em"
+                                onclick="location.href='{{ route('blog', ['id' => $postComment->author->id]) }}'">
                         </div>
                         <div class="d-flex justify-content-center">
-                            <span style="cursor: pointer;" onclick="location.href='{{ route("blog", ['id'=>$postComment->author->id]) }}'">{{ $postComment->author->name }}</span>
+                            <span style="cursor: pointer;"
+                                onclick="location.href='{{ route('blog', ['id' => $postComment->author->id]) }}'">{{ $postComment->author->name }}</span>
                         </div>
 
                     </div>
@@ -135,6 +158,9 @@
                         <div class="container">
                             <div class="col-12">
                                 <div class="row">
+                                    <div class="d-flex justify-content-end">
+                                        <small style="cursor: pointer;" onclick="DeleteComment('{{ $postComment->id }}')" class="text-danger">Delete</small>
+                                    </div>
                                     <div class="d-flex justify-content-end">
                                         <small
                                             class="text-muted">{{ date('H:i j/n/Y', strtotime($postComment->created_at)) }}</small>
@@ -383,5 +409,84 @@
                 }
 
             });
+
+            function DeletePost() {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ route('ajax.deletepost') }}",
+                    type: "DELETE",
+                    data: {
+                        'id': '{{ $post->id }}',
+                        'authorid': '{{ $post->author->id }}',
+                        '_token': csrfToken,
+                    },
+                    success: function(response) {
+                        location.href = "{{ route('home') }}";
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+
+                });
+            }
+
+            function DeletePostAndBanUser() {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url: "{{ route('ajax.deletepost') }}",
+                    type: "DELETE",
+                    data: {
+                        'id': '{{ $post->id }}',
+                        'authorid': '{{ $post->author->id }}',
+                        '_token': csrfToken,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+
+                });
+
+                $.ajax({
+                    url: "{{ route('ajax.banuser') }}",
+                    type: "POST",
+                    data: {
+                        'id': '{{ $post->author->id }}',
+                        '_token': csrfToken,
+                    },
+                    success: function(response) {
+                        location.href = "{{ route('home') }}";
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+
+                });
+            }
+
+
+            function DeleteComment(id){
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url: "{{ route('ajax.deletecomment') }}",
+                    type: "DELETE",
+                    data: {
+                        'id': id,
+                        '_token': csrfToken,
+                    },
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+
+                });   
+            }
+
         </script>
     @endsection

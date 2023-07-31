@@ -236,4 +236,18 @@ class Service
 
         return false;
     }
+
+    public function delete_comment($id)
+    {
+        $comment = Comments::find($id);
+
+        if(auth()->user()->role === 'admin' || $comment->author->id === auth()->user()->id)
+        {
+            $comment->delete();
+
+            return true;
+        }
+
+        return false;
+    }
 }

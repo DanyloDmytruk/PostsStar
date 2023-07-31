@@ -38,6 +38,12 @@
                             <a class="nav-link {{ $activeLink == 'posts' ? 'active' : '' }}"
                                 href="{{ route('posts') }}"><i class="fa-solid fa-comments"></i> Posts</a>
                         </li>
+                        @if(auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activeLink == 'admin' ? 'active' : '' }}"
+                                href="{{ route('admin') }}"><i class="fa-solid fa-user"></i> Admin</a>
+                        </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link {{ $activeLink == 'about' ? 'active' : '' }}"
                                 href="{{ route('about') }}"><i class="fa-solid fa-circle-info"></i> About</a>
@@ -77,6 +83,7 @@
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>

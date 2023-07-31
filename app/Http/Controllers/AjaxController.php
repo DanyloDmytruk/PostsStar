@@ -34,9 +34,11 @@ class AjaxController extends Controller
 
     public function deletepost(Request $request)
     {
-        $request->validate(['id' => 'required|integer|min:1',]);
+        $request->validate(['id' => 'required|integer|min:1',
+        'authorid' => 'integer|min:1',
+    ]);
 
-        return $this->ajaxService->delete_post($request->id, auth()->user()->id) ? 'SUCCESS' : 'FAIL';
+        return $this->ajaxService->delete_post($request->id, ($request->has('authorid')) ? $request->authorid : auth()->user()->id) ? 'SUCCESS' : 'FAIL';
     }
 
     public function createpost(Request $request)
@@ -127,7 +129,16 @@ class AjaxController extends Controller
         return $this->ajaxService->ban_user($request->id);
     }
 
-    
+    public function deletecomment(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->delete_comment($request->id);
+    }
+
+
 
     public function __invoke(Request $request)
     {

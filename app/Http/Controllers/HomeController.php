@@ -29,6 +29,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
         $userPosts = Posts::where('author_id', auth()->user()->id)->paginate(10);
 
         if ($request->ajax()) {
