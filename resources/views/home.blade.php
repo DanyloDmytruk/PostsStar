@@ -116,7 +116,7 @@
                 <div class="mb-3">
                     <span class="fs-6 border-bottom">TOP BLOGS</span>
                     @foreach ($topBlogs as $topBlog)
-                        <a href="{{ route('blog', ['id' => $topBlog->id]) }}"
+                        <a href="{{ route('posts.read', ['id' => $topBlog->id]) }}"
                             class="d-flex link-dark text-decoration-none">
                             <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-user"></i>
                                 {{ $topBlog->name }}</span><br>
