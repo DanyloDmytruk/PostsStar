@@ -34,5 +34,10 @@ Route::group([
 
 
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
+    
+    Route::group(['prefix' => '/posts'], function(){
 
+        Route::post('/getall', 'PostsController@getall');
+        Route::post('/get', 'PostsController@get');
+    });
 });
