@@ -112,9 +112,13 @@
                 </a>
 
                 <span class="fs-6 border-bottom">TOP BLOGS</span>
-                <a href="/" class="d-flex align-items-center pb-3 mb-3 mt-2 link-dark text-decoration-none ">
-                    <span class="fs-6 fw-semibold"></span>
-                </a>
+                @foreach ($topBlogs as $topBlog)
+                        <a href="{{ route('blog', ['id' => $topBlog->id]) }}"
+                            class="d-flex link-dark text-decoration-none">
+                            <span class="fs-6 fw-semibold mb-1"><i class="fa-regular fa-user"></i>
+                                {{ $topBlog->name }}</span><br>
+                        </a>
+                @endforeach
 
                 <span class="fs-6 border-bottom">LAST POSTS</span>
                 @foreach ($lastestPosts as $latestPost)

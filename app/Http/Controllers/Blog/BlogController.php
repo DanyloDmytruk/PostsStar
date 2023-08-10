@@ -42,7 +42,9 @@ class BlogController extends Controller
         $pageTitle = $userBlog->name.' - PostsStar';
         $activeLink = 'null';
 
-        return view('blog.blog', compact('pageTitle', 'activeLink', 'userPosts', 'userBlog', 'lastestPosts'));
+        $topBlogs = $this->service->getTopBlogs();
+
+        return view('blog.blog', compact('pageTitle', 'activeLink', 'userPosts', 'userBlog', 'lastestPosts', 'topBlogs'));
         
     }
 }
