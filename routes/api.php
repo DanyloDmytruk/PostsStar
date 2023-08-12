@@ -43,6 +43,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
         Route::post('/create', 'CreateController@index'); //create post; image, title, content, category, tags; return 'message' in JSON
         Route::post('/update', 'UpdateController@index'); //update post; content, tags, postid; return 'message' in JSON
         Route::post('/delete', 'DeleteController@index'); //delete post; id, authorid; return 'message' in JSON
+        Route::post('/like', 'LikeController@index');     //like post; postid; return 'post_likes' as post likes count
+        Route::post('/dislike', 'DisikeController@index');  //dislike post; postid; return 'post_likes' as post likes count
+
+        
 
     });
 });
