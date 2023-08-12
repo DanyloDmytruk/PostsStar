@@ -37,9 +37,12 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
     
     Route::group(['prefix' => '/posts', 'namespace' => 'Posts'], function(){
 
-        Route::post('/getall', 'PostsController@getall');
-        Route::post('/get', 'PostsController@get');
+        Route::post('/getall', 'PostsController@getall'); //get all posts; no params
+        Route::post('/get', 'PostsController@get'); //get posts with pagination; page - page, per_page - posts per page
 
-        Route::post('/create', 'PostsController@get');
+        Route::post('/create', 'CreateController@index'); //create post; image, title, content, category, tags; return 'message' in JSON
+        Route::post('/update', 'UpdateController@index'); //update post; content, tags, postid; return 'message' in JSON
+        Route::post('/delete', 'DeleteController@index'); //delete post; id, authorid; return 'message' in JSON
+
     });
 });
