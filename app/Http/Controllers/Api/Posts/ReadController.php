@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Posts\PostsResource;
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use App\Http\Resources\Posts\ReadResource;
 
 use App\Services\Ajax\Service; //Just use ajax service methods to keep DRY
 
-class LikeController extends Controller
+class ReadController extends Controller
 {
     protected $ajaxService;
 
@@ -18,14 +19,11 @@ class LikeController extends Controller
         $this->ajaxService = $ajaxService;
     }
 
-    public function index(Request $request)
+    public function index($id)
     {
-        $request->validate([
-            'postid' => 'required|integer|min:1',
-        ]);
-
-        $postLikes = $this->ajaxService->like_post(auth('api')->user()->id, $request->postid);
+        $post = Posts::find($id);
+        $post['me_liked'] = in_array(auth('api')->user()->id, array_column($post->usersLiked->toArray(), 'id')) ? true : false;
         
-        return response()->json(['post_likes' => $postLikes]);
+        return new ReadResource($post);
     }
 }

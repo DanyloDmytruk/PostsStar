@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Services\Ajax\Service; //Just use ajax service methods to keep DRY
 
-class PostsController extends Controller
+class CreateController extends Controller
 {
     protected $ajaxService;
 
