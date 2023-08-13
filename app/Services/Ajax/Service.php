@@ -145,6 +145,21 @@ class Service
         return true;
     }
 
+    public function update_comment($commentId, $content, $authorId)
+    {
+
+        $comment = Comments::where('author_id', $authorId)->where('id', $commentId)->first();
+        if(!$comment)
+        {
+            return false;
+        }
+
+        $comment->content = $content;
+        $comment->save();
+
+        return true;
+    }
+
     public function like_post($authorId, $postId)
     {
         if (PostLikes::where('post_id', $postId)->where('author_id', $authorId)->count() == 0) {

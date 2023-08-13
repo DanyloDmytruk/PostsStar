@@ -138,6 +138,16 @@ class AjaxController extends Controller
         return $this->ajaxService->delete_comment($request->id);
     }
 
+    public function updatecomment(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string|min:1',
+            'id' => 'required|integer|min:1',
+        ]);
+
+        return $this->ajaxService->update_comment($request->id, $request->content, auth()->user()->id) ?  'SUCCESS' : 'FAIL';
+    }
+
 
 
     public function __invoke(Request $request)

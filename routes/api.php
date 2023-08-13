@@ -51,6 +51,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
 
     Route::group(['prefix' => '/comment', 'namespace' => 'Comment'], function(){
             
+        Route::post('/create', 'CreateController@index'); //create comment; content, postid; return 'message' in JSON
         Route::post('/read', 'ReadController@index'); //get comment(s) content by id or post_id; id|post_id
+        Route::post('/update', 'UpdateController@index'); //update comment content by id; id; return 'message' in JSON
+
     });
+
 });
