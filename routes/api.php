@@ -54,8 +54,9 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
         Route::post('/create', 'CreateController@index'); //create comment; content, postid; return 'message' in JSON
         Route::post('/read', 'ReadController@index'); //get comment(s) content by id or post_id; id|post_id
         Route::post('/update', 'UpdateController@index'); //update comment content by id; id; return 'message' in JSON
-        Route::post('/delete', 'DeleteController@index'); //delete comment by id; id; return 'message' in JSON
-        
+        Route::delete('/delete', 'DeleteController@index'); //delete comment by id; id; return 'message' in JSON
+        Route::post('/like', 'LikeController@index'); //like comment by id; commentid; return count of likes
+        Route::post('/dislike', 'DislikeController@index'); //dislike comment by commentid; id; return count of likes
 
     });
 
