@@ -46,8 +46,11 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function(){
         Route::delete('/delete', 'DeleteController@index'); //delete post; id, authorid; return 'message' in JSON
         Route::post('/like', 'LikeController@index');     //like post; postid; return 'post_likes' as post likes count
         Route::post('/dislike', 'DisikeController@index');  //dislike post; postid; return 'post_likes' as post likes count
-        
-        
 
+    });
+
+    Route::group(['prefix' => '/comment', 'namespace' => 'Comment'], function(){
+            
+        Route::post('/read', 'ReadController@index'); //get comment(s) content by id or post_id; id|post_id
     });
 });
