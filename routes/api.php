@@ -64,14 +64,14 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function () {
 
         Route::group(['prefix' => '/blog', 'namespace' => 'Blog'], function(){
            
-           Route::post('/ban', 'BanController@index');
-           Route::post('/unban', 'UnbanController@index');
+           Route::post('/ban', 'BanController@index'); //ban user; id; return 'message' in jSON
+           Route::post('/unban', 'UnbanController@index'); //unban user; id; return 'message' in jSON
            Route::post('/changebio', 'ChangebioController@index');
            Route::post('/changeavatar', 'ChangeavatarController@index');
            
         });
 
-        Route::post('/search', 'SearchController@index');
+        Route::post('/search', 'SearchController@index'); //search posts and users by word; word, search; return JSON of results
 
     });
 
