@@ -27,7 +27,12 @@ class AuthController extends Controller
      */
     public function login(\Illuminate\Http\Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $loginField = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        $credentials = [
+            $loginField => $request->input('login'),
+            'password' => $request->input('password'),
+        ];
 
         if ($token = $this->guard()->attempt($credentials)) {
             return $this->respondWithToken($token);
@@ -35,6 +40,7 @@ class AuthController extends Controller
 
         return response()->json(['error' => 'Invalid Login Details'], 401);
     }
+
 
     /**
      * Get the authenticated User.
