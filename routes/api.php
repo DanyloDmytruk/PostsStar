@@ -26,10 +26,11 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('login', 'AuthController@login'); //login; login (username or email), password; return token
+    Route::post('register', 'AuthController@register'); //register; avatar(image), name, email, password; return token
+    Route::post('logout', 'AuthController@logout'); //logout
+    Route::post('refresh', 'AuthController@refresh'); //refresh token
+    Route::post('me', 'AuthController@me'); //return user ingo
 });
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -15,8 +16,45 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
+
+
+    public function register(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=180,min_height=180,max_width=2048,max_height=2048|max:2048',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        try {
+
+            if (request()->hasfile('avatar')) {
+                $avatarName = time() . $request['name'][0] . '.' . request()->avatar->getClientOriginalExtension();
+                request()->avatar->move(public_path('avatars'), $avatarName);
+            }
+
+            User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => \Illuminate\Support\Facades\Hash::make($request['password']),
+                'avatar' => $avatarName ?? NULL,
+                'bio' => '',
+                'role' => 'user',
+            ]);
+
+            // Generate a JWT token for the registered user
+            $token = $this->guard()->attempt(['email' => $request->email, 'password' => $request->password]);
+
+            return $this->respondWithToken($token);
+            
+        } catch (\Exception $ex) {
+            return response()->json(['message' => 'Error creating user']);
+        }
+    }
+
 
     /**
      * Get a JWT token via given credentials.
@@ -85,8 +123,8 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => $this->guard()->factory()->getTTL() * 60,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
         ]);
     }
 
