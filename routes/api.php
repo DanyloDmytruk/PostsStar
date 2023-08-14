@@ -66,7 +66,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.auth'], function () {
            
            Route::post('/ban', 'BanController@index'); //ban user; id; return 'message' in jSON
            Route::post('/unban', 'UnbanController@index'); //unban user; id; return 'message' in jSON
-           Route::post('/changebio', 'ChangebioController@index');
+           Route::post('/changebio', 'ChangebioController@index'); //change user's bio; 
            Route::post('/changeavatar', 'ChangeavatarController@index');
            
         });
