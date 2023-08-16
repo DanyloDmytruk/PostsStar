@@ -130,6 +130,8 @@ class Service
 
         $post->save();
 
+        \Cache::put('post_'.$id, $post);
+
         return true;
     }
 

@@ -15,7 +15,10 @@ class ReadController extends BaseController
 {
     public function __invoke($id)
     {
-        $post = Posts::find($id);
+        $post = \Cache::rememberForever('post_'.$id, function () use ($id) {
+            return Posts::find($id);
+        });
+
         $postComments = $post->comments;
         $userCommentsLiked = null;
 
