@@ -20,7 +20,7 @@ RUN docker-php-ext-install xml
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # install app
-RUN composer install -vvv
+#RUN composer install -vvv
 RUN npm install
 RUN composer update
 RUN npm run dev
