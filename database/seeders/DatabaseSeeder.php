@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Posts;
 use App\Models\Tags;
 use App\Models\PostTag;
+use App\Models\User;
 
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,9 @@ class DatabaseSeeder extends Seeder
             'title' => 'vitamines'
         ]);
         
+        User::factory(10)->create();
         Posts::factory(100)->create();
+        
 
         $tagsIDs = DB::table('tags')->pluck('id');
         $postsIDs = DB::table('posts')->pluck('id');

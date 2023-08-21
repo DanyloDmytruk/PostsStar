@@ -16,6 +16,7 @@ class PostsFactory extends Factory
     public function definition()
     {
         $categoriesIDs = DB::table('categories')->pluck('id');
+        $authorsIDs = DB::table('users')->pluck('id');
 
         return [
             'title' => $this->faker->title(),
@@ -24,6 +25,7 @@ class PostsFactory extends Factory
             'likes' => random_int(1, 100),
             'is_published' => 1,
             'category_id' => $this->faker->randomElement($categoriesIDs),
+            'author_id' => $this->faker->randomElement($authorsIDs),
         ];
     }
 }
