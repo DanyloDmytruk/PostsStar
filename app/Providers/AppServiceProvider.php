@@ -5,11 +5,12 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
-use App\Http\Controllers\EloquentRepository;
-use App\Http\Controllers\ElasticsearchRepository;
+use App\Posts\EloquentRepository;
+use App\Posts\ElasticsearchRepository;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use App\Http\Controllers\PostsRepository;
+
+use App\Posts\PostsRepository;
 
 class AppServiceProvider extends ServiceProvider
 {

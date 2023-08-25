@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Posts;
 
-use App\Http\Controllers;
+use App\Models\Posts as Post;
 use Elasticsearch\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Posts;
 
 class ElasticsearchRepository implements PostsRepository
 {
@@ -27,7 +26,7 @@ class ElasticsearchRepository implements PostsRepository
 
     private function searchOnElasticsearch(string $query = ''): array
     {
-        $model = new Posts;
+        $model = new Post;
 
         $items = $this->elasticsearch->search([
             'index' => $model->getSearchIndex(),
@@ -35,7 +34,7 @@ class ElasticsearchRepository implements PostsRepository
             'body' => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['title^5', 'content', 'tags'],
+                        'fields' => ['title^5', 'content'],
                         'query' => $query,
                     ],
                 ],
@@ -49,7 +48,7 @@ class ElasticsearchRepository implements PostsRepository
     {
         $ids = Arr::pluck($items['hits']['hits'], '_id');
 
-        return Posts::findMany($ids)
+        return Post::findMany($ids)
             ->sortBy(function ($post) use ($ids) {
                 return array_search($post->getKey(), $ids);
             });

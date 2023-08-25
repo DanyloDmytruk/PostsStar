@@ -53,7 +53,7 @@ class ReindexCommand extends Command
                 'index' => $post->getSearchIndex(),
                 'type' => $post->getSearchType(),
                 'id' => $post->getKey(),
-                'content' => $post->toSearchArray(),
+                'body' => $post->toSearchArray(),
             ]);
 
             $this->output->write('.');

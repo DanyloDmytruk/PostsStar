@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Posts;
 
-use App\Http\Controllers;
-use App\Models\Posts;
+use App\Models\Posts as Post;
 use Illuminate\Database\Eloquent\Collection;
+
 
 class EloquentRepository implements PostsRepository
 {
     public function search(string $query = ''): Collection
     {
-        return Posts::query()
+        return Post::query()
             ->where('content', 'like', "%{$query}%")
             ->orWhere('title', 'like', "%{$query}%")
             ->get();

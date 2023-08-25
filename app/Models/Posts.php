@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Search\Searchable;
 
-
 class Posts extends Model
 {
     use Searchable;

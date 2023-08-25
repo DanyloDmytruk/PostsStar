@@ -9,8 +9,20 @@ use App\Models\Posts;
 use App\Models\Categories;
 use App\Models\User;
 
+use App\Posts\PostsRepository;
+
+
 class SearchController extends Controller
 {
+
+    protected $postsSearchService;
+
+    public function __construct(PostsRepository $postsSearchService)
+    {
+        $this->postsSearchService = $postsSearchService;
+    }
+
+
     public function index(Request $request)
     {
         $request->validate([
@@ -26,7 +38,7 @@ class SearchController extends Controller
         $word = $request->input('word');
         $activeNavbar = $request->input('search') ? $request->input('search') : 'all';
 
-        $posts = Posts::where('title', 'LIKE', "%$word%")->get();
+        $posts = $this->postsSearchService->search($word); //Posts::where('title', 'LIKE', "%$word%")->get();
         $users = User::where('name', 'LIKE', "%$word%")->get();
 
         $searchCountResults["posts"] = $posts->count();
