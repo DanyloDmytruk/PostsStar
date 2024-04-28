@@ -15,3 +15,10 @@
 🗂️ Content Categorization: To help users discover and explore content, PostsStar incorporates a robust categorization system. It allows blog posts to be organized into various categories, making it easier for readers to find content that aligns with their interests.
 
 🎨 Responsive Design: PostsStar is built with a responsive design, ensuring that the blog looks great and functions well across different devices, including desktops, tablets, and smartphones. This enhances accessibility and enables users to access and engage with the platform from anywhere.
+
+🖼 Examples:
+![alt text](https://github.com/DanyloDmytruk/PostsStar/blob/main/ex1.png?raw=true)
+![alt text](https://github.com/DanyloDmytruk/PostsStar/blob/main/ex2.png?raw=true)
+![alt text](https://github.com/DanyloDmytruk/PostsStar/blob/main/ex3.png?raw=true)
+![alt text](https://github.com/DanyloDmytruk/PostsStar/blob/main/ex4.png?raw=true)
+![alt text](https://github.com/DanyloDmytruk/PostsStar/blob/main/ex5.png?raw=true)
